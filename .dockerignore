@@ -1,0 +1,8 @@
+.DS_Store
+.claude
+.svelte-kit
+.vscode
+build
+data
+node_modules
+npm-debug.log*
