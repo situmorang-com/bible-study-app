@@ -32,7 +32,7 @@
 			<span class="text-4xl">📖</span>
 			<h2 class="text-white text-lg font-bold mt-3">Studi Alkitab Interaktif</h2>
 			<p class="text-blue-100 text-sm mt-1 leading-relaxed">
-				Temukan kebenaran yang mengubah hidup melalui 12 pelajaran Alkitab yang menarik
+				Temukan kebenaran yang mengubah hidup melalui {lessons.length} pelajaran Alkitab yang menarik
 			</p>
 			<a href="/pelajaran" class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-accent hover:bg-accent-light text-primary-dark font-bold text-sm rounded-full transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105">
 				Mulai Belajar →

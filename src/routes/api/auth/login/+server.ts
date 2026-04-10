@@ -1,45 +1,30 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import bcrypt from 'bcryptjs';
+import {
+	findUserByName,
+	isValidPinFormat,
+	normalizeName,
+	normalizePin,
+	setAuthCookies,
+	verifyPin
+} from '$lib/server/auth';
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
-	const { name, pin } = await request.json();
+	const body = await request.json();
+	const name = normalizeName(body.name);
+	const pin = normalizePin(body.pin);
 	const secure = process.env.NODE_ENV === 'production';
 
 	if (!name || !pin) return json({ error: 'Isi nama dan PIN' }, { status: 400 });
+	if (name.length < 2) return json({ error: 'Nama minimal 2 karakter' }, { status: 400 });
+	if (!isValidPinFormat(pin)) return json({ error: 'PIN harus 4 digit angka' }, { status: 400 });
 
 	try {
-		const { db } = await import('$lib/server/db');
-		const { users } = await import('$lib/server/schema');
-		const { eq } = await import('drizzle-orm');
+		const user = findUserByName(name);
+		if (!user) return json({ error: 'Nama belum terdaftar. Silakan daftar dulu.' }, { status: 404 });
+		if (!verifyPin(pin, user.pin)) return json({ error: 'PIN tidak sesuai untuk nama ini' }, { status: 401 });
 
-		const user = db.select().from(users).where(eq(users.name, name)).get();
-		if (!user) return json({ error: 'Nama tidak ditemukan' }, { status: 401 });
-
-		const validPin = bcrypt.compareSync(pin, user.pin);
-		if (!validPin) return json({ error: 'PIN salah' }, { status: 401 });
-
-		cookies.set('userId', user.id, {
-			path: '/',
-			maxAge: 60 * 60 * 24 * 365,
-			httpOnly: true,
-			sameSite: 'lax',
-			secure
-		});
-		cookies.set('userName', user.name, {
-			path: '/',
-			maxAge: 60 * 60 * 24 * 365,
-			httpOnly: false,
-			sameSite: 'lax',
-			secure
-		});
-		cookies.set('userAvatar', user.avatarEmoji, {
-			path: '/',
-			maxAge: 60 * 60 * 24 * 365,
-			httpOnly: false,
-			sameSite: 'lax',
-			secure
-		});
+		setAuthCookies(cookies, user, secure);
 
 		return json({ success: true });
 	} catch (e) {

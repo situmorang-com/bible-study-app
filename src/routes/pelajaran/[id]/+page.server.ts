@@ -2,7 +2,7 @@ import { lessons } from '$lib/lessons';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ params, parent }) => {
+export const load: PageServerLoad = async ({ params, parent, url }) => {
 	const lessonId = parseInt(params.id);
 	const lesson = lessons.find(l => l.id === lessonId);
 
@@ -13,8 +13,10 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 	const { user } = await parent();
 	let progress = { currentSection: 0, completed: false };
 	let bestQuizScore: number | null = null;
+	let certificateUrl: string | null = null;
 
 	if (user) {
+		certificateUrl = `${url.origin}/sertifikat/${lessonId}/${user.id}`;
 		try {
 			const { db } = await import('$lib/server/db');
 			const { lessonProgress, quizResults } = await import('$lib/server/schema');
@@ -42,5 +44,5 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 		}
 	}
 
-	return { lesson, progress, bestQuizScore };
+	return { lesson, progress, bestQuizScore, certificateUrl, origin: url.origin };
 };

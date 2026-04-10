@@ -11,7 +11,7 @@
 
 <div class="page-transition px-5 pt-8">
 	<h1 class="text-2xl font-extrabold text-primary-dark mb-2">Pelajaran Alkitab</h1>
-	<p class="text-gray-500 text-sm mb-6">12 pelajaran interaktif untuk mengenal Allah</p>
+	<p class="text-gray-500 text-sm mb-6">{lessons.length} pelajaran interaktif untuk mengenal Allah</p>
 
 	<div class="space-y-3">
 		{#each lessons as lesson, i}

@@ -8,6 +8,8 @@ export const users = sqliteTable('users', {
 	createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 });
 
+export type User = typeof users.$inferSelect;
+
 export const lessonProgress = sqliteTable('lesson_progress', {
 	id: text('id').primaryKey(),
 	userId: text('user_id').notNull().references(() => users.id),

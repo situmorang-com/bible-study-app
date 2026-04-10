@@ -4,6 +4,8 @@ export interface LessonSection {
 	verse?: string;
 	verseRef?: string;
 	image?: string; // emoji or icon name
+	bullets?: string[];
+	check?: QuizQuestion;
 }
 
 export interface QuizQuestion {
@@ -21,6 +23,9 @@ export interface Lesson {
 	color: string; // tailwind gradient
 	sections: LessonSection[];
 	quiz: QuizQuestion[];
+	finalAssessmentTitle?: string;
+	finalAssessmentDescription?: string;
+	passThreshold?: number;
 }
 
 // =============================================================================
@@ -36,104 +41,321 @@ export const lessons: Lesson[] = [
 	{
 		id: 1,
 		title: 'Masih Adakah yang Bisa Dipercaya?',
-		subtitle: 'Alkitab — satu-satunya buku yang bisa kamu percaya sepenuhnya',
+		subtitle: '13 langkah sederhana untuk melihat bahwa Alkitab tetap dapat dipercaya',
 		icon: '📖',
 		color: 'from-blue-600 to-indigo-700',
+		finalAssessmentTitle: 'Ringkasan Akhir',
+		finalAssessmentDescription: 'Jawab 10 pertanyaan sederhana. Kamu perlu minimal 7 jawaban benar untuk lulus.',
+		passThreshold: 70,
 		sections: [
 			{
-				title: 'Dunia Penuh Janji Palsu',
-				content: 'Di dunia ini, banyak orang berbohong. Iklan di TV berbohong. Teman kadang tidak jujur. Bahkan pemimpin pun bisa ingkar janji. Apakah masih ada sesuatu yang benar-benar bisa dipercaya? Jawabannya: YA! Alkitab adalah satu-satunya buku yang selalu benar dan tidak pernah bohong.',
+				title: '1. Apa kata Alkitab tentang dirinya sendiri?',
+				content: 'Di dunia yang penuh janji palsu, Allah memberi satu dasar yang pasti: Firman-Nya. Alkitab berkata bahwa pesannya berasal dari Allah. Allah menuntun para penulis melalui Roh Kudus, jadi Kitab Suci tidak dapat dibatalkan.',
 				verse: '"Segala tulisan yang diilhamkan Allah memang bermanfaat untuk mengajar, untuk menyatakan kesalahan, untuk memperbaiki kelakuan dan untuk mendidik orang dalam kebenaran."',
 				verseRef: '2 Timotius 3:16',
-				image: '🌍'
+				image: '🕊️',
+				bullets: [
+					'2 Petrus 1:21 berkata orang-orang kudus berbicara karena digerakkan Roh Kudus.',
+					'Yohanes 10:35 berkata Kitab Suci tidak dapat dibatalkan.'
+				],
+				check: {
+					question: 'Menurut Alkitab, dari siapa pesan Alkitab berasal?',
+					options: ['Allah', 'Raja-raja kuno', 'Guru-guru terkenal', 'Cerita rakyat'],
+					correctIndex: 0,
+					explanation: 'Alkitab mengaku berasal dari Allah dan ditulis oleh manusia yang dituntun Roh Kudus.'
+				}
 			},
 			{
-				title: 'Siapa yang Menulis Alkitab?',
-				content: 'Alkitab ditulis oleh sekitar 40 orang yang berbeda-beda. Ada raja, nelayan, dokter, gembala, dan penjaga penjara. Mereka menulis selama 1.500 tahun! Tapi pesan Alkitab tetap satu dan tidak saling bertentangan. Mengapa? Karena Allah sendiri yang membimbing mereka menulis melalui Roh Kudus.',
-				verse: '"Sebab nubuat tidak pernah dihasilkan oleh kehendak manusia, tetapi oleh dorongan Roh Kudus orang-orang berbicara atas nama Allah."',
-				verseRef: '2 Petrus 1:21',
-				image: '✍️'
-			},
-			{
-				title: 'Yesus Percaya Alkitab',
-				content: 'Ketika Yesus dicobai oleh iblis di padang gurun, Yesus tidak melawan dengan kekuatan-Nya sendiri. Dia melawan dengan mengutip Alkitab! Yesus berkata: "Ada tertulis..." tiga kali. Kalau Yesus saja percaya dan memakai Alkitab, kita juga harus percaya!',
-				verse: '"Manusia hidup bukan dari roti saja, tetapi dari setiap firman yang keluar dari mulut Allah."',
-				verseRef: 'Matius 4:4',
-				image: '💪'
-			},
-			{
-				title: 'Nubuat yang Sudah Terbukti',
-				content: 'Alkitab meramalkan masa depan dengan tepat! Contohnya: Nabi Daniel menulis tentang 4 kerajaan besar dunia — Babel, Persia, Yunani, dan Roma — ratusan tahun sebelum terjadi. Semua tepat! Alkitab juga meramalkan nama raja Koresh 150 tahun sebelum dia lahir. Tidak ada buku lain yang bisa melakukan ini.',
-				verse: '"Akulah Allah dan tidak ada yang seperti Aku, yang memberitahukan dari mulanya hal yang kemudian."',
-				verseRef: 'Yesaya 46:9-10',
-				image: '🔮'
-			},
-			{
-				title: 'Alkitab dan Ilmu Pengetahuan',
-				content: 'Ribuan tahun yang lalu, orang-orang percaya bumi itu datar dan ditopang oleh sesuatu. Tapi Alkitab sudah tahu duluan! Alkitab bilang bumi itu bulat dan menggantung di atas kekosongan. Alkitab juga tahu udara itu punya berat, jauh sebelum ilmuwan menemukannya.',
-				verse: '"Dia membentangkan utara di atas kekosongan, dan menggantungkan bumi pada kehampaan."',
-				verseRef: 'Ayub 26:7',
-				image: '🌏'
-			},
-			{
-				title: 'Lebih dari 125 Nubuat tentang Yesus',
-				content: 'Dalam Perjanjian Lama, ada lebih dari 125 nubuat tentang kedatangan Yesus. Semuanya ditulis ratusan tahun sebelum Yesus lahir. Nubuat itu menyebutkan: Yesus lahir di Betlehem, lahir dari seorang perawan, dikhianati dengan 30 keping perak, dan bangkit dari kematian. Semua terjadi persis seperti yang ditulis! Kemungkinan ini terjadi secara kebetulan hampir mustahil.',
-				verse: '"Tetapi engkau, hai Betlehem Efrata, dari padamu akan tampil Dia yang akan memerintah Israel."',
-				verseRef: 'Mikha 5:1',
-				image: '⭐'
-			},
-			{
-				title: 'Arkeologi Membuktikan Alkitab',
-				content: 'Dulu banyak orang tidak percaya cerita Alkitab. Mereka bilang kota-kota dan orang-orang dalam Alkitab itu tidak nyata. Tapi para arkeolog (penggali sejarah) sudah menemukan bukti-buktinya! Mereka menemukan kota Niniwe, tembok Yerikho, dan banyak lagi. Setiap penemuan baru membuktikan Alkitab benar.',
-				verse: '"Firman-Mu itu kebenaran."',
+				title: '2. Bagaimana Yesus menunjukkan bahwa Dia percaya Kitab Suci?',
+				content: 'Saat iblis mencobai Yesus, Yesus tidak memakai ide-Nya sendiri. Yesus menjawab dengan Firman Tuhan. Yesus juga berkata bahwa Firman Allah adalah kebenaran. Jadi Yesus memperlakukan Alkitab sebagai dasar yang pasti.',
+				verse: '"Firman-Mu adalah kebenaran."',
 				verseRef: 'Yohanes 17:17',
-				image: '🏺'
+				image: '✝️',
+				bullets: [
+					'Dalam Matius 4:4, 7, dan 10, Yesus tiga kali berkata: "Ada tertulis."',
+					'Yesus memakai Kitab Suci sebagai jawaban saat dicobai.'
+				],
+				check: {
+					question: 'Apa yang dilakukan Yesus saat dicobai?',
+					options: ['Yesus mengutip Firman Tuhan', 'Yesus diam saja', 'Yesus lari dari tempat itu', 'Yesus memakai kuasa tanpa ayat'],
+					correctIndex: 0,
+					explanation: 'Yesus memakai Firman Tuhan sebagai jawaban yang benar.'
+				}
 			},
 			{
-				title: 'Alkitab Mengubah Hidup',
-				content: 'Bukti terbesar bahwa Alkitab itu benar adalah kuasanya untuk mengubah hidup orang. Pencuri jadi jujur. Pemabuk jadi sadar. Orang yang sedih menemukan harapan. Jutaan orang di seluruh dunia sudah berubah karena membaca Alkitab. Alkitab bukan buku biasa — itu adalah Firman Allah yang hidup!',
+				title: '3. Bagaimana nubuat membuktikan Alkitab berasal dari Allah?',
+				content: 'Allah bisa memberitahukan apa yang akan terjadi sebelum itu terjadi. Nubuat yang tergenapi menjadi bukti kuat bahwa Alkitab bukan buku biasa. Allah menunjukkan akhir sejak awal.',
+				verse: '"Akulah Allah ... yang memberitahukan dari mulanya hal yang kemudian."',
+				verseRef: 'Yesaya 46:9-10',
+				image: '🔮',
+				bullets: [
+					'Alkitab menubuatkan empat kerajaan besar: Babel, Media-Persia, Yunani, dan Roma.',
+					'Nama Koresy disebut sebelum ia lahir sebagai penakluk Babel.',
+					'Babel dinubuatkan tidak akan dihuni lagi.',
+					'Mesir dinubuatkan tidak lagi memimpin bangsa-bangsa.'
+				],
+				check: {
+					question: 'Mengapa nubuat yang tergenapi penting?',
+					options: ['Karena menunjukkan Allah tahu masa depan', 'Karena membuat cerita lebih seram', 'Karena semua buku punya nubuat', 'Karena hanya cocok untuk ahli sejarah'],
+					correctIndex: 0,
+					explanation: 'Nubuat yang menjadi kenyataan menunjukkan bahwa Allah benar-benar berbicara melalui Alkitab.'
+				}
+			},
+			{
+				title: '4. Apakah pernyataan Alkitab tentang alam cocok dengan sains?',
+				content: 'Ya. Roh Kudus yang menuntun penulis Alkitab selalu mengatakan kebenaran. Karena itu, beberapa fakta alam yang ditulis Alkitab ternyata cocok dengan ilmu pengetahuan.',
+				verse: '"Dasar firman-Mu adalah kebenaran."',
+				verseRef: 'Mazmur 119:160',
+				image: '🌍',
+				bullets: [
+					'Ayub 26:7 berkata bumi digantung pada kehampaan.',
+					'Yesaya 40:22 menggambarkan bumi itu bulat.',
+					'Ayub 28:25 menunjukkan udara memiliki berat.'
+				],
+				check: {
+					question: 'Fakta alam mana yang disebut Alkitab?',
+					options: ['Bumi digantung pada kehampaan', 'Rumus air adalah H2O', 'Mars punya dua bulan', 'Gunung tertinggi ada di Asia'],
+					correctIndex: 0,
+					explanation: 'Ayub 26:7 adalah salah satu contoh fakta alam yang disebut Alkitab.'
+				}
+			},
+			{
+				title: '5. Apakah petunjuk kesehatan Alkitab masih penting sekarang?',
+				content: 'Ya. Tuhan ingin manusia sehat dan kuat. Karena itu Alkitab memberi aturan hidup yang melindungi tubuh dan keluarga. Petunjuk ini masih berguna sampai sekarang.',
+				verse: '"Aku berdoa, semoga engkau baik-baik dan sehat-sehat saja."',
+				verseRef: '3 Yohanes 1:2',
+				image: '❤️',
+				bullets: [
+					'Ulangan 23:12-13 mengajarkan pembuangan kotoran harus ditutup dengan tanah.',
+					'1 Korintus 10:8 memperingatkan agar menjauhi percabulan.',
+					'Amsal 23:29-32 memperingatkan bahaya minuman keras.'
+				],
+				check: {
+					question: 'Petunjuk kesehatan mana yang memang diajarkan Alkitab?',
+					options: ['Jauhi minuman keras', 'Minum empat galon air setiap hari', 'Lari pagi dan sore wajib', 'Semua makanan harus mentah'],
+					correctIndex: 0,
+					explanation: 'Alkitab jelas memperingatkan bahaya minuman keras dan hidup yang tidak suci.'
+				}
+			},
+			{
+				title: '6. Apakah catatan sejarah Alkitab benar?',
+				content: 'Ya. Kadang bukti sejarah baru ditemukan jauh sesudah Alkitab ditulis. Tetapi berkali-kali arkeologi membuktikan bahwa nama orang, kota, dan bangsa dalam Alkitab memang nyata.',
+				verse: '"Aku, Tuhan, berkata benar, Aku memberitakan yang lurus."',
+				verseRef: 'Yesaya 45:19',
+				image: '🏺',
+				bullets: [
+					'Bangsa Het, kota Niniwe, dan kota Sodom dulu diragukan, lalu terbukti ada.',
+					'Raja Belsyazar dan Sargon dulu dianggap tidak nyata, lalu bukti sejarah ditemukan.',
+					'Tulisan dan kereta pada zaman Musa akhirnya terbukti memang sudah ada.',
+					'Banyak raja Israel dan Yehuda yang dulu hanya dikenal dari Alkitab kemudian muncul di catatan kuno lain.'
+				],
+				check: {
+					question: 'Apa yang sering terjadi ketika bukti sejarah baru ditemukan?',
+					options: ['Bukti baru sering menguatkan catatan Alkitab', 'Alkitab selalu dibatalkan', 'Nama-nama Alkitab makin tidak jelas', 'Semua kota Alkitab ternyata palsu'],
+					correctIndex: 0,
+					explanation: 'Arkeologi berulang kali menguatkan orang, tempat, dan peristiwa dalam Alkitab.'
+				}
+			},
+			{
+				title: '7. Fakta lain apa yang menunjukkan Alkitab diilhami Allah?',
+				content: 'Salah satu mukjizat besar Alkitab adalah kesatuannya. Banyak penulis yang berbeda menulisnya, tetapi pesannya tetap sejalan. Ini sangat luar biasa.',
+				verse: '"Segala tulisan yang diilhamkan Allah memang bermanfaat."',
+				verseRef: '2 Timotius 3:16',
+				image: '📚',
+				bullets: [
+					'Alkitab berisi 66 kitab.',
+					'Ditulis di tiga benua dan dalam tiga bahasa.',
+					'Ditulis oleh sekitar 40 orang dengan latar berbeda.',
+					'Ditulis selama kira-kira 1.500 tahun.',
+					'Walau begitu, pesan intinya tetap selaras seperti ditulis oleh satu Pikiran.'
+				],
+				check: {
+					question: 'Apa yang membuat kesatuan Alkitab begitu ajaib?',
+					options: ['Banyak penulis berbeda tetapi pesannya tetap selaras', 'Semua kitab ditulis dalam satu hari', 'Hanya satu orang menulis semuanya', 'Semua penulis tinggal di kota yang sama'],
+					correctIndex: 0,
+					explanation: 'Kesatuan Alkitab menunjukkan Roh Kudus menuntun semua penulisnya.'
+				}
+			},
+			{
+				title: '8. Bukti apa terlihat dari hidup orang yang percaya Firman Tuhan?',
+				content: 'Hidup yang berubah adalah bukti yang sangat kuat. Orang yang sungguh-sungguh mengikuti Yesus dan taat pada Firman Tuhan dapat menjadi pribadi baru.',
+				verse: '"Jadi siapa yang ada di dalam Kristus, ia adalah ciptaan baru."',
+				verseRef: '2 Korintus 5:17',
+				image: '✨',
+				bullets: [
+					'Orang mabuk bisa sadar.',
+					'Orang yang hidup najis bisa menjadi murni.',
+					'Orang yang takut bisa menjadi berani.',
+					'Orang yang kasar bisa menjadi baik.'
+				],
+				check: {
+					question: 'Perubahan hidup apa yang Alkitab katakan dapat terjadi?',
+					options: ['Orang berdosa dapat menjadi ciptaan baru', 'Tidak ada orang yang bisa berubah', 'Perubahan hanya terjadi pada orang kaya', 'Perubahan hanya terjadi setelah tua'],
+					correctIndex: 0,
+					explanation: 'Firman Tuhan memiliki kuasa untuk mengubah hidup manusia.'
+				}
+			},
+			{
+				title: '9. Apa bukti dari nubuat Mesias yang digenapi oleh Yesus?',
+				content: 'Perjanjian Lama menulis banyak hal tentang Mesias jauh sebelum Yesus lahir. Yesus dan Apolos memakai nubuat itu untuk menunjukkan bahwa Yesus benar-benar Mesias. Ada lebih dari 125 nubuat; berikut beberapa contohnya.',
+				verse: '"Mulai dari Musa dan segala nabi, Ia menjelaskan kepada mereka apa yang tertulis tentang diri-Nya."',
+				verseRef: 'Lukas 24:27',
+				image: '⭐',
+				bullets: [
+					'Lahir di Betlehem - Mikha 5:2 -> Matius 2:1',
+					'Lahir dari seorang perawan - Yesaya 7:14 -> Matius 1:18-23',
+					'Datang dari garis Daud - Yeremia 23:5 -> Wahyu 22:16',
+					'Menjadi sasaran pembunuhan sejak kecil - Yeremia 31:15 -> Matius 2:16-18',
+					'Dikhianati teman - Mazmur 41:9 -> Yohanes 13:18-19, 26',
+					'Dijual 30 keping perak - Zakharia 11:12 -> Matius 26:14-16',
+					'Disalibkan - Zakharia 12:10 -> Yohanes 19:16-18, 37',
+					'Pakaian-Nya diundi - Mazmur 22:18 -> Matius 27:35',
+					'Tulang-Nya tidak dipatahkan - Mazmur 34:20 -> Yohanes 19:31-36',
+					'Dikubur di kubur orang kaya - Yesaya 53:9 -> Matius 27:57-60',
+					'Waktu kematian-Nya sudah dinubuatkan - Daniel 9:26-27; Keluaran 12:6 -> Matius 27:45-50',
+					'Bangkit pada hari ketiga - Hosea 6:2 -> Kisah 10:38-40'
+				],
+				check: {
+					question: 'Mengapa nubuat tentang Mesias sangat penting?',
+					options: ['Karena menunjukkan Yesus cocok dengan janji Allah', 'Karena membuat Alkitab menjadi puisi', 'Karena hanya berguna untuk ahli sejarah', 'Karena Yesus menulis semua nubuat itu sendiri'],
+					correctIndex: 0,
+					explanation: 'Nubuat yang tergenapi dalam Yesus menunjukkan bahwa Yesus benar-benar Mesias yang dijanjikan.'
+				}
+			},
+			{
+				title: '10. Apa keuntungan bagi orang yang menerima Alkitab sebagai Firman Allah?',
+				content: 'Orang yang percaya Firman Tuhan akan mendapat jawaban untuk banyak pertanyaan besar yang membingungkan manusia. Tuhan memberi kebenaran yang tidak bisa kita temukan sendiri hanya dengan pikiran manusia.',
+				verse: '"Aku lebih berakal budi dari pada orang-orang tua, sebab aku memegang titah-titah-Mu."',
+				verseRef: 'Mazmur 119:100',
+				image: '🧭',
+				bullets: [
+					'Alkitab menegaskan Allah menciptakan dunia dalam enam hari yang nyata.',
+					'Alkitab menjelaskan air bah besar pada zaman Nuh.',
+					'Alkitab menjelaskan asal berbagai bahasa di menara Babel.',
+					'Firman Tuhan menolong kita lebih bijaksana daripada hikmat manusia yang terbatas.'
+				],
+				check: {
+					question: 'Apa salah satu keuntungan menerima Alkitab sebagai Firman Allah?',
+					options: ['Mendapat jawaban benar untuk pertanyaan hidup', 'Tidak perlu belajar lagi', 'Bisa tahu semua rahasia dunia sekaligus', 'Bisa hidup tanpa Tuhan'],
+					correctIndex: 0,
+					explanation: 'Firman Tuhan memberi jawaban yang jelas untuk pertanyaan besar tentang hidup.'
+				}
+			},
+			{
+				title: '11. Peristiwa apa membuat banyak orang melihat kuasa Alkitab?',
+				content: 'Bencana alam, perang, dan teror membuat banyak orang sadar bahwa dunia ini tidak aman. Alkitab sudah lebih dulu berkata bahwa menjelang akhir zaman akan ada banyak kesusahan di bumi. Karena itu, banyak orang kembali mencari kekuatan dan harapan di dalam Firman Tuhan.',
+				verse: '"Di bumi bangsa-bangsa akan takut dan bingung ... laut dan gelombang berbunyi gemuruh."',
+				verseRef: 'Lukas 21:25',
+				image: '🌊',
+				bullets: [
+					'Tsunami, badai besar, dan gempa mengingatkan manusia bahwa dunia ini rapuh.',
+					'Serangan teror dan peperangan menunjukkan tidak ada bangsa yang sungguh aman.',
+					'Sebagian orang mulai bertanya lagi apakah dunia diciptakan oleh Allah dan apakah Firman Tuhan benar.'
+				],
+				check: {
+					question: 'Mengapa peristiwa besar dunia membuat orang kembali melihat Alkitab?',
+					options: ['Karena Alkitab memberi harapan saat dunia tidak pasti', 'Karena Alkitab menjanjikan hidup tanpa masalah hari ini', 'Karena semua bencana hilang seketika', 'Karena semua orang otomatis menjadi baik'],
+					correctIndex: 0,
+					explanation: 'Saat dunia terasa goyah, Firman Tuhan memberi harapan dan penjelasan yang kuat.'
+				}
+			},
+			{
+				title: '12. Mengapa Alkitab memberi peluang terbaik untuk damai dan bahagia?',
+				content: 'Alkitab menjawab pertanyaan hidup yang paling penting. Alkitab menjelaskan dari mana kita berasal, mengapa kita hidup, dan apa masa depan kita bersama Tuhan. Karena itu Alkitab memberi damai, sukacita, dan arah hidup.',
 				verse: '"Firman-Mu itu pelita bagi kakiku dan terang bagi jalanku."',
 				verseRef: 'Mazmur 119:105',
-				image: '💡'
+				image: '💡',
+				bullets: [
+					'Dari mana saya berasal? Allah menciptakan kita menurut gambar-Nya.',
+					'Mengapa saya ada di sini? Untuk mengenal Allah, menerima keselamatan dari Yesus, dan bertumbuh menjadi seperti Dia.',
+					'Apa masa depan saya? Yesus akan datang kembali dan membawa umat-Nya ke rumah yang telah Dia sediakan.'
+				],
+				check: {
+					question: 'Pertanyaan besar apa yang dijawab Alkitab?',
+					options: ['Asal kita, tujuan hidup, dan masa depan', 'Hanya cara menjadi kaya', 'Hanya rahasia kerajaan kuno', 'Hanya peraturan sekolah'],
+					correctIndex: 0,
+					explanation: 'Alkitab menjawab pertanyaan terdalam tentang asal, tujuan, dan masa depan manusia.'
+				}
 			},
 			{
-				title: 'Apa yang Harus Kamu Lakukan?',
-				content: 'Sekarang kamu tahu bahwa Alkitab bisa dipercaya. Langkah selanjutnya adalah: BACA Alkitab setiap hari! Mulailah dari kitab Injil Yohanes. Minta Allah membantu kamu mengerti. Alkitab adalah surat cinta dari Allah untukmu. Dia ingin kamu mengenalnya lebih dekat.',
-				verse: '"Betapa manisnya janji-Mu itu bagi langit-langitku, lebih dari madu bagi mulutku."',
-				verseRef: 'Mazmur 119:103',
-				image: '📬'
+				title: '13. Apakah kamu bersyukur Allah menjawab pertanyaan hidup?',
+				content: 'Pelajaran ini mengajak kita melihat bahwa Allah tidak diam. Allah memberi Firman-Nya supaya kita mengenal kebenaran, mengenal Yesus, dan mempunyai pengharapan. Respon yang paling tepat adalah bersyukur dan mau belajar lebih dalam lagi.',
+				verse: '"Aku akan datang kembali dan membawa kamu ke tempat-Ku."',
+				verseRef: 'Yohanes 14:3',
+				image: '🙏',
+				bullets: [
+					'Allah ingin kita datang kepada-Nya dengan hati terbuka.',
+					'Belajar Alkitab adalah langkah untuk mengenal Yesus lebih dekat.',
+					'Rasa syukur terlihat dari kemauan untuk terus belajar dan taat.'
+				],
+				check: {
+					question: 'Apa respon terbaik setelah belajar bahwa Alkitab dapat dipercaya?',
+					options: ['Bersyukur kepada Allah dan mau terus belajar', 'Mengabaikan semua yang sudah dipelajari', 'Berhenti membaca Alkitab', 'Hanya percaya kalau semua teman setuju'],
+					correctIndex: 0,
+					explanation: 'Respon yang sehat adalah bersyukur kepada Tuhan dan terus belajar Firman-Nya.'
+				}
 			}
 		],
 		quiz: [
 			{
-				question: 'Berapa banyak orang yang menulis Alkitab?',
-				options: ['1 orang', 'Sekitar 40 orang', '100 orang', '12 orang'],
-				correctIndex: 1,
-				explanation: 'Alkitab ditulis oleh sekitar 40 orang berbeda selama 1.500 tahun, tapi pesannya tetap satu karena Allah yang membimbing mereka.'
+				question: 'Apa pengakuan utama Alkitab tentang dirinya?',
+				options: ['Alkitab diilhami Allah', 'Alkitab hanya dongeng lama', 'Alkitab ditulis tanpa tuntunan Tuhan', 'Alkitab hanya untuk bangsa tertentu'],
+				correctIndex: 0,
+				explanation: 'Alkitab mengaku berasal dari Allah dan ditulis oleh manusia yang dituntun Roh Kudus.'
 			},
 			{
-				question: 'Apa yang Yesus lakukan ketika dicobai iblis?',
-				options: ['Yesus lari', 'Yesus mengutip Alkitab', 'Yesus diam saja', 'Yesus marah'],
-				correctIndex: 1,
-				explanation: 'Yesus melawan pencobaan iblis dengan mengutip Firman Allah — "Ada tertulis..." (Matius 4:4).'
+				question: 'Bagaimana Yesus menunjukkan bahwa Dia percaya Kitab Suci?',
+				options: ['Yesus mengutip Firman Tuhan', 'Yesus menyuruh malaikat berdebat', 'Yesus membuang semua gulungan kitab', 'Yesus berkata Alkitab tidak penting'],
+				correctIndex: 0,
+				explanation: 'Yesus memakai Kitab Suci sebagai dasar jawaban dan mengatakannya sebagai kebenaran.'
 			},
 			{
-				question: 'Nabi Daniel meramalkan berapa kerajaan besar dunia?',
-				options: ['2 kerajaan', '3 kerajaan', '4 kerajaan', '7 kerajaan'],
-				correctIndex: 2,
-				explanation: 'Daniel meramalkan 4 kerajaan: Babel, Persia, Yunani, dan Roma — semuanya terjadi persis!'
+				question: 'Mengapa nubuat yang tergenapi menguatkan iman kita?',
+				options: ['Karena menunjukkan Allah tahu masa depan', 'Karena nubuat selalu kabur', 'Karena semua buku punya nubuat', 'Karena nubuat hanya cocok untuk mimpi'],
+				correctIndex: 0,
+				explanation: 'Nubuat yang menjadi kenyataan menunjukkan bahwa Allah benar-benar berbicara melalui Alkitab.'
 			},
 			{
-				question: 'Apa yang Alkitab katakan tentang bumi di Ayub 26:7?',
-				options: ['Bumi itu datar', 'Bumi ditopang gajah', 'Bumi menggantung di atas kehampaan', 'Bumi terapung di air'],
-				correctIndex: 2,
-				explanation: 'Jauh sebelum ilmuwan modern, Alkitab sudah tahu bahwa bumi menggantung di atas kehampaan!'
+				question: 'Fakta sains mana yang disebut dalam Alkitab?',
+				options: ['Bumi digantung pada kehampaan', 'Planet terjauh bernama Neptunus', 'Rumus air H2O', 'Darah punya empat golongan'],
+				correctIndex: 0,
+				explanation: 'Ayub 26:7 adalah salah satu contoh fakta alam yang disebut Alkitab.'
 			},
 			{
-				question: 'Berapa banyak nubuat Perjanjian Lama tentang Yesus?',
-				options: ['10 nubuat', '50 nubuat', 'Lebih dari 125 nubuat', '5 nubuat'],
-				correctIndex: 2,
-				explanation: 'Ada lebih dari 125 nubuat tentang Yesus, semuanya ditulis ratusan tahun sebelum Dia lahir dan semuanya terbukti benar!'
+				question: 'Petunjuk kesehatan mana yang diajarkan Alkitab?',
+				options: ['Jauhi minuman keras dan percabulan', 'Wajib lari dua kali sehari', 'Minum obat setiap pagi', 'Makan hanya satu jenis makanan'],
+				correctIndex: 0,
+				explanation: 'Alkitab memberi prinsip kesehatan yang melindungi tubuh dan keluarga.'
+			},
+			{
+				question: 'Apa yang sering dibuktikan oleh arkeologi?',
+				options: ['Catatan orang, kota, dan bangsa dalam Alkitab memang nyata', 'Semua tokoh Alkitab adalah dongeng', 'Alkitab salah tentang sejarah', 'Tidak ada bukti apa pun tentang dunia kuno'],
+				correctIndex: 0,
+				explanation: 'Bukti sejarah berulang kali menguatkan catatan Alkitab.'
+			},
+			{
+				question: 'Apa yang sangat ajaib dari Alkitab?',
+				options: ['Pesannya tetap selaras walau ditulis banyak penulis', 'Semua kitab ditulis oleh satu raja', 'Semua ditulis di satu kota kecil', 'Semua kitab berisi topik yang sama persis'],
+				correctIndex: 0,
+				explanation: 'Kesatuan Alkitab di tengah banyak penulis dan zaman adalah bukti kuat tuntunan Roh Kudus.'
+			},
+			{
+				question: 'Bukti hidup apa yang mendukung kebenaran Alkitab?',
+				options: ['Orang bisa diubah menjadi pribadi baru', 'Tidak ada perubahan hidup sama sekali', 'Perubahan hanya terjadi pada ilmuwan', 'Perubahan hanya terjadi di masa Alkitab'],
+				correctIndex: 0,
+				explanation: 'Firman Tuhan terbukti hidup karena mengubah karakter manusia.'
+			},
+			{
+				question: 'Apa yang ditunjukkan nubuat Mesias yang digenapi Yesus?',
+				options: ['Yesus adalah Mesias yang dijanjikan', 'Yesus hanya guru biasa', 'Nubuat tidak penting', 'Perjanjian Lama dan Baru tidak berhubungan'],
+				correctIndex: 0,
+				explanation: 'Kecocokan nubuat Mesias dengan hidup Yesus menjadi bukti yang sangat kuat.'
+			},
+			{
+				question: 'Mengapa Alkitab memberi damai dan arah hidup?',
+				options: ['Karena menjawab asal, tujuan, dan masa depan kita', 'Karena membuat semua masalah hilang seketika', 'Karena hanya berisi aturan keras', 'Karena menggantikan hubungan dengan Tuhan'],
+				correctIndex: 0,
+				explanation: 'Alkitab menjawab pertanyaan terbesar manusia dan membawa kita kepada pengharapan di dalam Yesus.'
 			}
 		]
 	},

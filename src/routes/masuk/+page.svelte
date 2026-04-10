@@ -6,6 +6,8 @@
 
 	async function login() {
 		if (!name || !pin) { error = 'Isi nama dan PIN'; return; }
+		if (name.trim().length < 2) { error = 'Nama minimal 2 karakter'; return; }
+		if (!/^\d{4}$/.test(pin.trim())) { error = 'PIN harus 4 digit angka'; return; }
 
 		loading = true;
 		error = '';
@@ -68,6 +70,7 @@
 	{/if}
 
 	<button
+		type="button"
 		onclick={login}
 		disabled={loading}
 		class="w-full py-3.5 bg-gradient-to-r from-primary to-primary-light text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all active:scale-95 disabled:opacity-50"

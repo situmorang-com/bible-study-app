@@ -8,8 +8,8 @@
 	const avatars = ['📖', '✝️', '🙏', '⭐', '🕊️', '💧', '🌟', '🌈', '🔥', '💎', '🌻', '🦋'];
 
 	async function register() {
-		if (name.length < 2) { error = 'Nama minimal 2 karakter'; return; }
-		if (pin.length !== 4 || !/^\d+$/.test(pin)) { error = 'PIN harus 4 digit angka'; return; }
+		if (name.trim().length < 2) { error = 'Nama minimal 2 karakter'; return; }
+		if (!/^\d{4}$/.test(pin.trim())) { error = 'PIN harus 4 digit angka'; return; }
 
 		loading = true;
 		error = '';
@@ -37,7 +37,7 @@
 	<div class="text-center mt-6 mb-8">
 		<span class="text-5xl">{selectedAvatar}</span>
 		<h1 class="text-2xl font-extrabold text-primary-dark mt-3">Daftar Akun</h1>
-		<p class="text-gray-500 text-sm mt-1">Simpan progres dan ikuti kuis!</p>
+		<p class="text-gray-500 text-sm mt-1">Kalau nama sudah ada dan PIN cocok, kamu akan langsung masuk.</p>
 	</div>
 
 	<!-- Avatar picker -->
