@@ -1312,15 +1312,15 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 				},
 				{
 					title: '8. Setuju bahwa perceraian bukan jawaban',
-					content: 'Alkitab memandang pernikahan sebagai ikatan serius. Perceraian membawa luka besar. Bahkan saat ada luka berat, pengampunan tetap lebih indah daripada perpisahan bila pemulihan masih mungkin.',
-					verse: '"Apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia."',
-					verseRef: 'Matius 19:6',
+					content: 'Alkitab memandang pernikahan sebagai ikatan serius untuk seumur hidup. Perceraian bukan jawaban utama. Alkitab memberi pengecualian dalam kasus perzinahan, tetapi bahkan dalam keadaan itu pun perceraian tidak diperintahkan. Pengampunan tetap lebih baik bila pemulihan masih mungkin. Pikiran tentang perceraian yang terus dipelihara sering justru merusak pernikahan dan menambah luka bagi pasangan dan anak-anak.',
+					verse: '"Barangsiapa menceraikan isterinya, kecuali karena zinah, lalu kawin dengan perempuan lain, ia berbuat zinah."',
+					verseRef: 'Matius 19:9',
 					image: '🛡️',
 					check: {
-						question: 'Sikap dasar terhadap perceraian menurut pelajaran ini adalah?',
-						options: ['Bukan jawaban utama', 'Solusi paling cepat', 'Tidak masalah', 'Selalu pilihan pertama'],
+						question: 'Menurut pelajaran ini, kapan perceraian diizinkan?',
+						options: ['Hanya dalam kasus perzinahan, tetapi tidak diperintahkan', 'Setiap kali marah', 'Kalau bosan', 'Kapan saja asal setuju'],
 						correctIndex: 0,
-						explanation: 'Allah merancang pernikahan untuk seumur hidup dan mendorong pemulihan.'
+						explanation: 'Source Amazing Facts menekankan bahwa perceraian hanya diizinkan dalam kasus perzinahan, tetapi pengampunan tetap lebih baik jika pemulihan mungkin.'
 					}
 				},
 				{
