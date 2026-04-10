@@ -6,6 +6,14 @@ export interface LessonSection {
 	image?: string;
 }
 
+export interface LessonSource {
+	provider: string;
+	series: string;
+	lessonNumber: number;
+	titleEn: string;
+	url: string;
+}
+
 export interface QuizQuestion {
 	question: string;
 	options: string[];
@@ -21,4 +29,5 @@ export interface Lesson {
 	color: string;
 	sections: LessonSection[];
 	quiz: QuizQuestion[];
+	source?: LessonSource;
 }
