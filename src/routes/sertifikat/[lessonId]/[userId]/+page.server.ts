@@ -11,52 +11,50 @@ export const load: PageServerLoad = async ({ params, url }) => {
 	}
 
 	try {
-		const { db } = await import('$lib/server/db');
-		const { users, quizResults } = await import('$lib/server/schema');
-		const { and, desc, eq, gte } = await import('drizzle-orm');
+		const { sqlite } = await import('$lib/server/db');
 
-		const user = db
-			.select({
-				id: users.id,
-				name: users.name,
-				avatarEmoji: users.avatarEmoji
-			})
-			.from(users)
-			.where(eq(users.id, params.userId))
-			.get();
+		const user = sqlite
+			.prepare('SELECT id, name, avatar_emoji AS avatarEmoji FROM users WHERE id = ?')
+			.get(params.userId) as
+			| { id: string; name: string; avatarEmoji: string }
+			| undefined;
 
 		if (!user) {
 			throw error(404, 'Peserta tidak ditemukan');
 		}
 
-		const passingAttempt = db
-			.select({
-				score: quizResults.score,
-				totalQuestions: quizResults.totalQuestions,
-				percentage: quizResults.percentage,
-				completedAt: quizResults.completedAt
-			})
-			.from(quizResults)
-			.where(
-				and(
-					eq(quizResults.userId, params.userId),
-					eq(quizResults.lessonId, lessonId),
-					gte(quizResults.percentage, lesson.passThreshold ?? 70)
-				)
+		const passingAttempt = sqlite
+			.prepare(
+				`SELECT score,
+				        total_questions AS totalQuestions,
+				        percentage,
+				        completed_at AS completedAt
+				 FROM quiz_results
+				 WHERE user_id = ? AND lesson_id = ? AND percentage >= ?
+				 ORDER BY percentage DESC, completed_at DESC
+				 LIMIT 1`
 			)
-			.orderBy(desc(quizResults.percentage), desc(quizResults.completedAt))
-			.get();
+			.get(params.userId, lessonId, lesson.passThreshold ?? 70) as
+			| { score: number; totalQuestions: number; percentage: number; completedAt: number }
+			| undefined;
 
 		if (!passingAttempt) {
 			throw error(404, 'Sertifikat belum tersedia');
 		}
 
+		// completed_at may be Unix seconds (DB default) or ms (new inserts). Normalize to ms.
+		const completedAtMs =
+			passingAttempt.completedAt < 1e12
+				? passingAttempt.completedAt * 1000
+				: passingAttempt.completedAt;
+
 		return {
 			lesson,
 			user,
-			attempt: passingAttempt,
+			attempt: { ...passingAttempt, completedAt: completedAtMs },
 			origin: url.origin,
-			certificateUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}`
+			certificateUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}`,
+			ogImageUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}/og.png`
 		};
 	} catch (err) {
 		if (err && typeof err === 'object' && 'status' in err) {

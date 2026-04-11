@@ -1,5 +1,4 @@
 <script lang="ts">
-	import amazingFactsLogo from '$lib/assets/amazing-facts-logo.svg';
 	import CertificateCard from '$lib/components/CertificateCard.svelte';
 	import ShareButtons from '$lib/components/ShareButtons.svelte';
 	import type { PageData } from './$types';
@@ -14,11 +13,11 @@
 		}).format(new Date(data.attempt.completedAt))
 	);
 
-	let ogTitle = $derived(`${data.user.name} telah mendapatkan sertifikat Pendalaman Alkitab`);
+	let ogTitle = $derived(`${data.user.name} lulus Pendalaman Alkitab: "${data.lesson.title}"`);
 	let ogDescription = $derived(
-		'"Masih Adakah yang Bisa Dipercaya?" - Temukan bukti bahwa Firman Tuhan tetap teguh di tengah dunia yang penuh ketidakpastian.'
+		`Nilai ${Math.round(data.attempt.percentage)}% — Firman Tuhan tetap teguh di tengah dunia yang penuh ketidakpastian. Yuk ikut belajar bareng.`
 	);
-	let ogImage = $derived(new URL(amazingFactsLogo, data.origin).toString());
+	let ogImage = $derived(data.ogImageUrl);
 </script>
 
 <svelte:head>
@@ -28,8 +27,14 @@
 	<meta property="og:title" content={ogTitle} />
 	<meta property="og:description" content={ogDescription} />
 	<meta property="og:image" content={ogImage} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:alt" content={ogTitle} />
 	<meta property="og:url" content={data.certificateUrl} />
-	<meta name="twitter:card" content="summary" />
+	<meta property="og:site_name" content="Pendalaman Alkitab" />
+	<meta property="og:locale" content="id_ID" />
+	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={ogTitle} />
 	<meta name="twitter:description" content={ogDescription} />
 	<meta name="twitter:image" content={ogImage} />
