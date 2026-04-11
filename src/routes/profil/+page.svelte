@@ -71,22 +71,38 @@
 				<h3 class="font-bold text-gray-800 mb-3">Kuis Terakhir</h3>
 				<div class="space-y-2">
 					{#each data.recentQuizzes as quiz}
-						<div class="flex items-center gap-3 p-3 bg-white rounded-xl shadow-sm">
-							<div class="w-10 h-10 rounded-lg bg-gradient-to-br {lessons.find(l => l.id === quiz.lessonId)?.color ?? 'from-gray-400 to-gray-500'} flex items-center justify-center text-lg">
-								{lessons.find(l => l.id === quiz.lessonId)?.icon ?? '📖'}
+						{#if quiz.percentage >= 70}
+							<a href="/sertifikat/{quiz.lessonId}/{data.user.id}" class="flex items-center gap-3 p-3 bg-white rounded-xl shadow-sm active:bg-gray-50">
+								<div class="w-10 h-10 rounded-lg bg-gradient-to-br {lessons.find(l => l.id === quiz.lessonId)?.color ?? 'from-gray-400 to-gray-500'} flex items-center justify-center text-lg">
+									{lessons.find(l => l.id === quiz.lessonId)?.icon ?? '📖'}
+								</div>
+								<div class="flex-1">
+									<p class="text-sm font-semibold text-gray-800">
+										{lessons.find(l => l.id === quiz.lessonId)?.title ?? `Pelajaran ${quiz.lessonId}`}
+									</p>
+									<p class="text-[10px] text-gray-400">{quiz.score}/{quiz.totalQuestions} benar</p>
+								</div>
+								<div class="text-right flex items-center gap-1">
+									<p class="font-bold text-sm text-success">{Math.round(quiz.percentage)}%</p>
+									<span class="text-success text-xs">🏆</span>
+								</div>
+							</a>
+						{:else}
+							<div class="flex items-center gap-3 p-3 bg-white rounded-xl shadow-sm">
+								<div class="w-10 h-10 rounded-lg bg-gradient-to-br {lessons.find(l => l.id === quiz.lessonId)?.color ?? 'from-gray-400 to-gray-500'} flex items-center justify-center text-lg">
+									{lessons.find(l => l.id === quiz.lessonId)?.icon ?? '📖'}
+								</div>
+								<div class="flex-1">
+									<p class="text-sm font-semibold text-gray-800">
+										{lessons.find(l => l.id === quiz.lessonId)?.title ?? `Pelajaran ${quiz.lessonId}`}
+									</p>
+									<p class="text-[10px] text-gray-400">{quiz.score}/{quiz.totalQuestions} benar</p>
+								</div>
+								<div class="text-right">
+									<p class="font-bold text-sm text-red-500">{Math.round(quiz.percentage)}%</p>
+								</div>
 							</div>
-							<div class="flex-1">
-								<p class="text-sm font-semibold text-gray-800">
-									{lessons.find(l => l.id === quiz.lessonId)?.title ?? `Pelajaran ${quiz.lessonId}`}
-								</p>
-								<p class="text-[10px] text-gray-400">{quiz.score}/{quiz.totalQuestions} benar</p>
-							</div>
-							<div class="text-right">
-								<p class="font-bold text-sm {quiz.percentage >= 70 ? 'text-success' : 'text-red-500'}">
-									{Math.round(quiz.percentage)}%
-								</p>
-							</div>
-						</div>
+						{/if}
 					{/each}
 				</div>
 			</div>
