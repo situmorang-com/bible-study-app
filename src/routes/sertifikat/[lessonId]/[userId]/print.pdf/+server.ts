@@ -57,247 +57,226 @@ function buildCertificate(opts: {
 	certId: string;
 	qrDataUri: string;
 }) {
-	const { userName, lessonTitle, percentage, issueDate, certId, qrDataUri } = opts;
+	const { userName, lessonTitle, issueDate, certId, qrDataUri } = opts;
 
 	return el('div', {
 		style: {
 			width: `${DESIGN_W}px`,
 			height: `${DESIGN_H}px`,
 			display: 'flex',
-			flexDirection: 'column',
-			padding: '80px 100px',
-			backgroundColor: '#ffffff',
-			fontFamily: 'Inter',
+			padding: '40px',
+			backgroundColor: '#fdf8ec',
+			fontFamily: 'Playfair',
 			color: '#0f1f33',
 			position: 'relative'
 		},
-		children: [
-			// Top accent bar
-			el('div', {
-				style: {
-					position: 'absolute',
-					top: 0,
-					left: 0,
-					right: 0,
-					height: '8px',
-					backgroundColor: '#e8a838',
-					display: 'flex'
-				}
-			}),
-			// Header
-			el('div', {
-				style: {
-					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'center'
-				},
-				children: [
-					el('img', {
-						src: amazingFactsDataUri,
-						width: 260,
-						height: 76,
-						style: { display: 'flex' }
-					}),
-					el('div', {
-						style: {
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'flex-end'
-						},
-						children: [
-							el('div', {
-								style: {
-									fontSize: '12px',
-									fontWeight: 700,
-									letterSpacing: '3px',
-									textTransform: 'uppercase',
-									color: '#9ca3af',
-									display: 'flex'
-								},
-								children: 'Certificate No.'
-							}),
-							el('div', {
-								style: {
-									fontSize: '16px',
-									fontWeight: 700,
-									color: '#0f1f33',
-									marginTop: '4px',
-									display: 'flex'
-								},
-								children: certId
-							})
-						]
-					})
-				]
-			}),
-			// Body
-			el('div', {
+		children: el('div', {
+			style: {
+				flex: 1,
+				display: 'flex',
+				flexDirection: 'column',
+				borderWidth: '6px',
+				borderStyle: 'double',
+				borderColor: '#b8852a',
+				padding: '30px'
+			},
+			children: el('div', {
 				style: {
 					flex: 1,
 					display: 'flex',
 					flexDirection: 'column',
-					justifyContent: 'center',
-					alignItems: 'flex-start',
-					marginTop: '40px'
+					borderWidth: '1px',
+					borderStyle: 'solid',
+					borderColor: '#b8852a',
+					padding: '60px 80px',
+					alignItems: 'center',
+					textAlign: 'center',
+					position: 'relative'
 				},
 				children: [
+					// Decorative diamonds at top
 					el('div', {
 						style: {
-							fontSize: '14px',
-							fontWeight: 700,
-							letterSpacing: '6px',
-							textTransform: 'uppercase',
-							color: '#e8a838',
-							display: 'flex'
+							display: 'flex',
+							gap: '14px',
+							alignItems: 'center',
+							marginBottom: '20px'
 						},
-						children: 'Sertifikat Penyelesaian'
+						children: [
+							el('div', {
+								style: {
+									width: '14px',
+									height: '14px',
+									backgroundColor: '#b8852a',
+									transform: 'rotate(45deg)',
+									display: 'flex'
+								}
+							}),
+							el('div', {
+								style: {
+									width: '240px',
+									height: '1px',
+									backgroundColor: '#b8852a',
+									display: 'flex'
+								}
+							}),
+							el('div', {
+								style: {
+									width: '20px',
+									height: '20px',
+									backgroundColor: '#b8852a',
+									transform: 'rotate(45deg)',
+									display: 'flex'
+								}
+							}),
+							el('div', {
+								style: {
+									width: '240px',
+									height: '1px',
+									backgroundColor: '#b8852a',
+									display: 'flex'
+								}
+							}),
+							el('div', {
+								style: {
+									width: '14px',
+									height: '14px',
+									backgroundColor: '#b8852a',
+									transform: 'rotate(45deg)',
+									display: 'flex'
+								}
+							})
+						]
 					}),
 					el('div', {
 						style: {
-							fontSize: '48px',
-							fontWeight: 800,
+							fontSize: '22px',
+							fontWeight: 400,
+							letterSpacing: '14px',
+							textTransform: 'uppercase',
+							color: '#b8852a',
+							marginTop: '10px',
+							display: 'flex',
+							fontFamily: 'Inter'
+						},
+						children: 'SERTIFIKAT'
+					}),
+					el('div', {
+						style: {
+							fontSize: '72px',
+							fontWeight: 900,
 							color: '#0f1f33',
-							marginTop: '8px',
+							marginTop: '4px',
 							display: 'flex'
 						},
 						children: 'Pendalaman Alkitab'
 					}),
 					el('div', {
 						style: {
-							width: '80px',
-							height: '3px',
-							backgroundColor: '#e8a838',
-							marginTop: '40px',
-							display: 'flex'
-						}
-					}),
-					el('div', {
-						style: {
-							fontSize: '18px',
+							fontSize: '20px',
+							fontFamily: 'Inter',
+							fontWeight: 400,
 							color: '#6b7280',
-							marginTop: '20px',
+							marginTop: '30px',
 							display: 'flex'
 						},
-						children: 'Diberikan kepada'
+						children: 'Dengan bangga diberikan kepada'
 					}),
 					el('div', {
 						style: {
-							fontSize: '88px',
+							fontSize: '96px',
 							fontFamily: 'Playfair',
 							fontWeight: 700,
+							fontStyle: 'italic',
 							color: '#0f1f33',
-							marginTop: '6px',
-							paddingBottom: '18px',
-							display: 'flex',
-							maxWidth: '1200px',
-							lineHeight: 1.1
+							marginTop: '20px',
+							paddingBottom: '12px',
+							display: 'flex'
 						},
 						children: userName
 					}),
 					el('div', {
 						style: {
-							fontSize: '22px',
-							color: '#4b5563',
-							marginTop: '8px',
-							maxWidth: '1100px',
-							display: 'flex',
-							lineHeight: 1.5
-						},
-						children: `Telah lulus pelajaran "${lessonTitle}" dengan nilai akhir ${percentage}%`
-					})
-				]
-			}),
-			// Footer
-			el('div', {
-				style: {
-					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'flex-end',
-					marginTop: '40px',
-					paddingTop: '24px',
-					borderTop: '1px solid #e5e7eb',
-					gap: '40px'
-				},
-				children: [
-					// Left: date
-					el('div', {
-						style: { display: 'flex', flexDirection: 'column' },
-						children: [
-							el('div', {
-								style: {
-									fontSize: '12px',
-									fontWeight: 700,
-									letterSpacing: '3px',
-									textTransform: 'uppercase',
-									color: '#9ca3af',
-									display: 'flex'
-								},
-								children: 'Tanggal'
-							}),
-							el('div', {
-								style: {
-									fontSize: '18px',
-									fontWeight: 700,
-									color: '#0f1f33',
-									marginTop: '4px',
-									display: 'flex'
-								},
-								children: issueDate
-							})
-						]
+							width: '520px',
+							height: '1px',
+							backgroundColor: '#b8852a',
+							display: 'flex'
+						}
 					}),
-					// Center: Adventist logo
-					el('img', {
-						src: adventistDataUri,
-						width: 240,
-						height: 62,
-						style: { display: 'flex', opacity: 0.85 }
-					}),
-					// Right: QR + verify
 					el('div', {
 						style: {
+							fontSize: '22px',
+							fontFamily: 'Inter',
+							color: '#4b5563',
+							marginTop: '30px',
+							maxWidth: '900px',
 							display: 'flex',
-							alignItems: 'center',
-							gap: '14px'
+							textAlign: 'center'
+						},
+						children: `Telah menyelesaikan pelajaran "${lessonTitle}"`
+					}),
+					// Footer with signatures and QR
+					el('div', {
+						style: {
+							marginTop: '80px',
+							display: 'flex',
+							justifyContent: 'space-between',
+							width: '100%',
+							alignItems: 'flex-end'
 						},
 						children: [
-							el('img', {
-								src: qrDataUri,
-								width: 110,
-								height: 110,
-								style: { display: 'flex' }
-							}),
 							el('div', {
 								style: {
 									display: 'flex',
 									flexDirection: 'column',
-									alignItems: 'flex-start'
+									alignItems: 'center'
 								},
 								children: [
 									el('div', {
 										style: {
-											fontSize: '11px',
-											fontWeight: 700,
-											letterSpacing: '3px',
-											textTransform: 'uppercase',
-											color: '#9ca3af',
-											display: 'flex'
-										},
-										children: 'Verifikasi'
-									}),
-									el('div', {
-										style: {
-											fontSize: '13px',
+											width: '260px',
+											borderTop: '1px solid #0f1f33',
+											paddingTop: '8px',
+											fontSize: '14px',
+											fontFamily: 'Inter',
 											fontWeight: 700,
 											color: '#0f1f33',
-											marginTop: '4px',
+											display: 'flex',
+											justifyContent: 'center'
+										},
+										children: 'Amazing Facts'
+									}),
+									el('div', {
+										style: {
+											fontSize: '12px',
+											fontFamily: 'Inter',
+											color: '#6b7280',
+											marginTop: '2px',
 											display: 'flex'
 										},
-										children: 'Scan untuk cek'
+										children: 'Penyelenggara'
+									})
+								]
+							}),
+							// Center: QR
+							el('div', {
+								style: {
+									display: 'flex',
+									flexDirection: 'column',
+									alignItems: 'center'
+								},
+								children: [
+									el('img', {
+										src: qrDataUri,
+										width: 100,
+										height: 100,
+										style: { display: 'flex', marginBottom: '8px' }
 									}),
 									el('div', {
 										style: {
 											fontSize: '11px',
+											fontFamily: 'Inter',
+											fontWeight: 700,
 											color: '#6b7280',
 											marginTop: '2px',
 											display: 'flex'
@@ -305,12 +284,45 @@ function buildCertificate(opts: {
 										children: certId
 									})
 								]
+							}),
+							el('div', {
+								style: {
+									display: 'flex',
+									flexDirection: 'column',
+									alignItems: 'center'
+								},
+								children: [
+									el('div', {
+										style: {
+											width: '260px',
+											borderTop: '1px solid #0f1f33',
+											paddingTop: '8px',
+											fontSize: '14px',
+											fontFamily: 'Inter',
+											fontWeight: 700,
+											color: '#0f1f33',
+											display: 'flex',
+											justifyContent: 'center'
+										},
+										children: issueDate
+									}),
+									el('div', {
+										style: {
+											fontSize: '12px',
+											fontFamily: 'Inter',
+											color: '#6b7280',
+											marginTop: '2px',
+											display: 'flex'
+										},
+										children: 'Tanggal Penerbitan'
+									})
+								]
 							})
 						]
 					})
 				]
 			})
-		]
+		})
 	});
 }
 
