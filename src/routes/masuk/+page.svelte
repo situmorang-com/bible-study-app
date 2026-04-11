@@ -1,8 +1,11 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	let name = $state('');
 	let pin = $state('');
 	let loading = $state(false);
 	let error = $state('');
+	let showRegisterPrompt = $state(false);
 
 	async function login() {
 		if (!name || !pin) { error = 'Isi nama dan PIN'; return; }
@@ -25,7 +28,18 @@
 			window.location.href = '/';
 		} else {
 			error = data.error || 'Nama atau PIN salah';
+			if (res.status === 404) {
+				showRegisterPrompt = true;
+			}
 		}
+	}
+
+	async function goToRegister() {
+		const params = new URLSearchParams({
+			name: name.trim(),
+			pin: pin.trim()
+		});
+		await goto(`/daftar?${params.toString()}`);
 	}
 </script>
 
@@ -84,3 +98,37 @@
 		</a>
 	</div>
 </div>
+
+{#if showRegisterPrompt}
+	<div class="fixed inset-0 z-40 flex items-center justify-center bg-black/20 backdrop-blur-sm px-5">
+		<div class="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl border border-white/70">
+			<div class="text-center">
+				<div class="text-4xl mb-3">📝</div>
+				<h2 class="text-xl font-extrabold text-primary-dark">Nama belum terdaftar</h2>
+				<p class="mt-2 text-sm text-gray-500">
+					Cek lagi dulu, apakah nama <span class="font-semibold text-primary-dark">"{name.trim()}"</span> sudah benar?
+				</p>
+				<p class="mt-2 text-sm text-gray-500">
+					Kalau sudah benar, kamu bisa langsung lanjut ke halaman daftar dengan nama dan PIN ini.
+				</p>
+			</div>
+
+			<div class="mt-5 grid gap-3">
+				<button
+					type="button"
+					onclick={() => showRegisterPrompt = false}
+					class="w-full py-3 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-colors"
+				>
+					Cek Nama Lagi
+				</button>
+				<button
+					type="button"
+					onclick={goToRegister}
+					class="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-primary-light text-white font-bold shadow-md hover:shadow-lg transition-all"
+				>
+					Lanjut ke Daftar
+				</button>
+			</div>
+		</div>
+	</div>
+{/if}

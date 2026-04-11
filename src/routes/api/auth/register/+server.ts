@@ -4,8 +4,10 @@ import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcryptjs';
 import {
 	findUserByName,
+	isValidPhoneNumberFormat,
 	isValidPinFormat,
 	normalizeName,
+	normalizePhoneNumber,
 	normalizePin,
 	setAuthCookies,
 	verifyPin
@@ -14,11 +16,16 @@ import {
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	const body = await request.json();
 	const name = normalizeName(body.name);
+	const phoneNumber = normalizePhoneNumber(body.phoneNumber);
 	const pin = normalizePin(body.pin);
 	const avatarEmoji = typeof body.avatarEmoji === 'string' ? body.avatarEmoji : undefined;
 	const secure = process.env.NODE_ENV === 'production';
 
 	if (!name || name.length < 2) return json({ error: 'Nama minimal 2 karakter' }, { status: 400 });
+	if (!phoneNumber) return json({ error: 'Nomor telepon wajib diisi' }, { status: 400 });
+	if (!isValidPhoneNumberFormat(phoneNumber)) {
+		return json({ error: 'Nomor telepon harus 9-15 digit angka' }, { status: 400 });
+	}
 	if (!isValidPinFormat(pin)) return json({ error: 'PIN harus 4 digit angka' }, { status: 400 });
 
 	try {
@@ -49,6 +56,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		db.insert(users).values({
 			id,
 			name,
+			phoneNumber,
 			pin: hashedPin,
 			avatarEmoji: user.avatarEmoji,
 			createdAt: new Date()

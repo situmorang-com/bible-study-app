@@ -12,10 +12,16 @@ export const normalizeName = (value: unknown) =>
 export const normalizePin = (value: unknown) =>
 	typeof value === 'string' ? value.trim() : '';
 
+export const normalizePhoneNumber = (value: unknown) =>
+	typeof value === 'string' ? value.trim().replace(/[^\d+]/g, '') : '';
+
 export const findUserByName = (name: string) =>
 	db.select().from(users).where(eq(users.name, name)).get();
 
 export const isValidPinFormat = (pin: string) => /^\d{4}$/.test(pin);
+
+export const isValidPhoneNumberFormat = (phoneNumber: string) =>
+	/^(?:\+?\d{9,15})$/.test(phoneNumber);
 
 export const verifyPin = (pin: string, hashedPin: string) =>
 	bcrypt.compareSync(pin, hashedPin);

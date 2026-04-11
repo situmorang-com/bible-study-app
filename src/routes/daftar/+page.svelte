@@ -1,5 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	let name = $state('');
+	let phoneNumber = $state('');
 	let pin = $state('');
 	let selectedAvatar = $state('📖');
 	let loading = $state(false);
@@ -7,8 +10,22 @@
 
 	const avatars = ['📖', '✝️', '🙏', '⭐', '🕊️', '💧', '🌟', '🌈', '🔥', '💎', '🌻', '🦋'];
 
+	onMount(() => {
+		const params = new URLSearchParams(window.location.search);
+		const prefillName = params.get('name');
+		const prefillPin = params.get('pin');
+
+		if (prefillName && !name) name = prefillName;
+		if (prefillPin && !pin) pin = prefillPin;
+	});
+
 	async function register() {
 		if (name.trim().length < 2) { error = 'Nama minimal 2 karakter'; return; }
+		if (!phoneNumber.trim()) { error = 'Nomor telepon wajib diisi'; return; }
+		if (!/^(?:\+?\d{9,15})$/.test(phoneNumber.trim().replace(/[^\d+]/g, ''))) {
+			error = 'Nomor telepon harus 9-15 digit angka';
+			return;
+		}
 		if (!/^\d{4}$/.test(pin.trim())) { error = 'PIN harus 4 digit angka'; return; }
 
 		loading = true;
@@ -17,7 +34,7 @@
 		const res = await fetch('/api/auth/register', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ name, pin, avatarEmoji: selectedAvatar })
+			body: JSON.stringify({ name, phoneNumber, pin, avatarEmoji: selectedAvatar })
 		});
 
 		const data = await res.json();
@@ -70,6 +87,21 @@
 			class="w-full px-4 py-3 bg-white rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors text-sm"
 			maxlength="30"
 		/>
+	</div>
+
+	<div class="mb-4">
+		<label for="phoneNumber" class="text-sm font-semibold text-gray-700 mb-2 block">Nomor Telepon</label>
+		<input
+			id="phoneNumber"
+			type="tel"
+			bind:value={phoneNumber}
+			placeholder="Masukkan nomor telepon"
+			class="w-full px-4 py-3 bg-white rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors text-sm"
+			inputmode="tel"
+			autocomplete="tel"
+			maxlength="16"
+		/>
+		<p class="text-[10px] text-gray-400 mt-1">Gunakan 9-15 digit angka, boleh diawali +</p>
 	</div>
 
 	<!-- PIN input -->

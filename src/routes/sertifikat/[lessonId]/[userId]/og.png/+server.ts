@@ -41,11 +41,9 @@ function buildCertificate(opts: {
 	userName: string;
 	lessonTitle: string;
 	percentage: number;
-	score: number;
-	totalQuestions: number;
 	issueDate: string;
 }) {
-	const { userName, lessonTitle, percentage, score, totalQuestions, issueDate } = opts;
+	const { userName, lessonTitle, percentage, issueDate } = opts;
 
 	return el('div', {
 		style: {
@@ -155,11 +153,12 @@ function buildCertificate(opts: {
 					}),
 					el('div', {
 						style: {
-							fontSize: '72px',
+							fontSize: '64px',
 							fontWeight: 800,
 							color: '#0f1f33',
-							marginTop: '6px',
-							lineHeight: 1.1,
+							marginTop: '10px',
+							lineHeight: 1.2,
+							paddingBottom: '12px',
 							display: 'flex',
 							maxWidth: '1040px'
 						},
@@ -167,10 +166,10 @@ function buildCertificate(opts: {
 					}),
 					el('div', {
 						style: {
-							fontSize: '22px',
+							fontSize: '24px',
 							color: '#4b5563',
 							marginTop: '18px',
-							maxWidth: '900px',
+							maxWidth: '940px',
 							display: 'flex',
 							textAlign: 'center'
 						},
@@ -218,15 +217,6 @@ function buildCertificate(opts: {
 									display: 'flex'
 								},
 								children: `${percentage}%`
-							}),
-							el('div', {
-								style: {
-									fontSize: '16px',
-									color: '#6b7280',
-									marginTop: '2px',
-									display: 'flex'
-								},
-								children: `${score} dari ${totalQuestions} benar`
 							})
 						]
 					}),
@@ -352,8 +342,6 @@ export const GET: RequestHandler = async ({ params, fetch, setHeaders }) => {
 		userName: user.name,
 		lessonTitle: lesson.title,
 		percentage: Math.round(attempt.percentage),
-		score: attempt.score,
-		totalQuestions: attempt.totalQuestions,
 		issueDate
 	});
 

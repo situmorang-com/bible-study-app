@@ -3,6 +3,7 @@ import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core';
 export const users = sqliteTable('users', {
 	id: text('id').primaryKey(),
 	name: text('name').notNull(),
+	phoneNumber: text('phone_number').notNull().default(''),
 	pin: text('pin').notNull(), // hashed 4-digit PIN for simplicity
 	avatarEmoji: text('avatar_emoji').notNull().default('📖'),
 	createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),

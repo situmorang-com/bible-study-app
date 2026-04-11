@@ -9,6 +9,7 @@ const SCHEMA_SQL = `
 	CREATE TABLE IF NOT EXISTS users (
 		id TEXT PRIMARY KEY,
 		name TEXT NOT NULL,
+		phone_number TEXT NOT NULL DEFAULT '',
 		pin TEXT NOT NULL,
 		avatar_emoji TEXT NOT NULL DEFAULT '📖',
 		created_at INTEGER NOT NULL DEFAULT (unixepoch())
@@ -102,6 +103,15 @@ const seedLessonCatalog = (sqlite: Database.Database) => {
 	transaction(rows);
 };
 
+const migrateUsersTable = (sqlite: Database.Database) => {
+	const columns = sqlite.prepare(`PRAGMA table_info(users)`).all() as Array<{ name: string }>;
+	const hasPhoneNumber = columns.some((column) => column.name === 'phone_number');
+
+	if (!hasPhoneNumber) {
+		sqlite.exec(`ALTER TABLE users ADD COLUMN phone_number TEXT NOT NULL DEFAULT ''`);
+	}
+};
+
 export const getDataDirectory = () =>
 	process.env.DATA_DIR ? resolve(process.env.DATA_DIR) : join(process.cwd(), 'data');
 
@@ -115,6 +125,7 @@ export const createSqliteClient = () => {
 	sqlite.pragma('journal_mode = WAL');
 	sqlite.pragma('foreign_keys = ON');
 	sqlite.exec(SCHEMA_SQL);
+	migrateUsersTable(sqlite);
 	seedLessonCatalog(sqlite);
 
 	return sqlite;

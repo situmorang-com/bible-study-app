@@ -1,6 +1,8 @@
 <script lang="ts">
+	import amazingFactsLogo from '$lib/assets/amazing-facts-logo.svg';
 	import CertificateCard from '$lib/components/CertificateCard.svelte';
 	import ShareButtons from '$lib/components/ShareButtons.svelte';
+	import { tick } from 'svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -42,10 +44,14 @@
 	let quizScore = $state(0);
 	let quizFinished = $state(false);
 	let showCelebration = $state(false);
+	let showRegisterReminder = $state(false);
 	let saveError = $state('');
 	let syncedProgressKey = $state('');
 	let shuffledCheckpointOptions = $state<(ShuffledOption[] | null)[]>([]);
 	let shuffledQuizOptions = $state<ShuffledOption[][]>([]);
+	let checkpointFeedbackElement = $state<HTMLDivElement | null>(null);
+	let checkpointCardElement = $state<HTMLDivElement | null>(null);
+	let nextSectionButtonElement = $state<HTMLButtonElement | null>(null);
 
 	function shuffleOptions(options: string[]) {
 		const shuffled = options.map((text, originalIndex) => ({ text, originalIndex }));
@@ -63,6 +69,13 @@
 		quizScore = 0;
 		quizFinished = false;
 		saveError = '';
+	}
+
+	function scrollToLessonTop() {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		});
 	}
 
 	function isSectionPassed(index: number) {
@@ -112,10 +125,17 @@
 		syncCheckpointState();
 	});
 
+	$effect(() => {
+		if (!data.user) {
+			showRegisterReminder = true;
+		}
+	});
+
 	function prevSection() {
 		if (currentSection > 0) {
 			currentSection--;
 			syncCheckpointState();
+			scrollToLessonTop();
 		}
 	}
 
@@ -132,14 +152,47 @@
 			}
 
 			syncCheckpointState();
+			scrollToLessonTop();
 			return;
 		}
 
 		showQuiz = true;
 		resetQuizState();
+		scrollToLessonTop();
 	}
 
-	function selectCheckpoint(index: number) {
+	async function scrollCheckpointFeedbackIntoView() {
+		await tick();
+		if (!checkpointCardElement || !nextSectionButtonElement) {
+			checkpointFeedbackElement?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'nearest'
+			});
+			return;
+		}
+
+		const topPadding = 20;
+		const bottomPadding = 120;
+		const viewportHeight = window.innerHeight;
+		const currentScroll = window.scrollY;
+		const checkpointRect = checkpointCardElement.getBoundingClientRect();
+		const nextButtonRect = nextSectionButtonElement.getBoundingClientRect();
+		const checkpointTop = currentScroll + checkpointRect.top;
+		const nextButtonBottom = currentScroll + nextButtonRect.bottom;
+		const maxScrollToKeepQuestionVisible = Math.max(0, checkpointTop - topPadding);
+		const scrollNeededForNextButton = Math.max(
+			0,
+			nextButtonBottom - (viewportHeight - bottomPadding)
+		);
+		const targetScroll = Math.min(maxScrollToKeepQuestionVisible, scrollNeededForNextButton);
+
+		window.scrollTo({
+			top: targetScroll,
+			behavior: 'smooth'
+		});
+	}
+
+	async function selectCheckpoint(index: number) {
 		const checkpoint = lesson.sections[currentSection]?.check;
 		if (!checkpoint || isSectionPassed(currentSection)) return;
 
@@ -150,11 +203,13 @@
 			);
 			checkpointResult = 'correct';
 			checkpointMessage = checkpoint.explanation;
+			await scrollCheckpointFeedbackIntoView();
 			return;
 		}
 
 		checkpointResult = 'wrong';
 		checkpointMessage = checkpoint.explanation;
+		await scrollCheckpointFeedbackIntoView();
 	}
 
 	function selectAnswer(index: number) {
@@ -188,6 +243,11 @@
 	function restartQuiz() {
 		showQuiz = true;
 		resetQuizState();
+	}
+
+	async function logout() {
+		await fetch('/api/auth/logout', { method: 'POST' });
+		window.location.href = '/';
 	}
 
 	async function saveProgress(section: number) {
@@ -252,6 +312,30 @@
 
 <div class="page-transition">
 	<div class="relative z-10 border-b border-gray-100 bg-white px-5 py-3 shadow-sm">
+		{#if data.user}
+			<div class="mb-3 flex items-center justify-between gap-3 rounded-2xl border border-gray-100 bg-slate-50 px-3 py-2">
+				<div class="flex items-center gap-3">
+					<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm">
+						<img src={amazingFactsLogo} alt="Amazing Facts" class="h-6 w-6 object-contain" />
+					</div>
+					<div>
+						<p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary/60">Sudah Masuk</p>
+						<div class="flex items-center gap-2">
+							<span class="text-lg">{data.user.avatarEmoji}</span>
+							<span class="text-sm font-bold text-gray-800">{data.user.name}</span>
+						</div>
+					</div>
+				</div>
+				<button
+					type="button"
+					onclick={logout}
+					class="rounded-full border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold text-red-500 transition-colors hover:bg-red-50"
+				>
+					Keluar
+				</button>
+			</div>
+		{/if}
+
 		<div class="flex items-center gap-3">
 			<a href="/pelajaran" class="text-xl text-gray-400 hover:text-gray-600">←</a>
 			<div class="flex-1">
@@ -319,7 +403,7 @@
 			{/if}
 
 			{#if section.check}
-				<div class="mt-5 rounded-2xl border border-blue-200/60 bg-blue-50/70 p-5">
+				<div bind:this={checkpointCardElement} class="mt-5 rounded-2xl border border-blue-200/60 bg-blue-50/70 p-5">
 					<p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary/70">Cek Pemahaman</p>
 					<h3 class="mt-2 text-base font-bold leading-snug text-gray-800">{section.check.question}</h3>
 
@@ -352,7 +436,10 @@
 					</div>
 
 					{#if checkpointResult !== 'idle'}
-						<div class="mt-4 rounded-xl border p-4 {checkpointResult === 'correct' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}">
+						<div
+							bind:this={checkpointFeedbackElement}
+							class="mt-4 rounded-xl border p-4 {checkpointResult === 'correct' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}"
+						>
 							<p class="text-sm font-bold {checkpointResult === 'correct' ? 'text-green-800' : 'text-red-700'}">
 								{checkpointResult === 'correct' ? 'Jawaban benar. Langkah berikutnya terbuka.' : 'Belum tepat. Coba lagi.'}
 							</p>
@@ -375,6 +462,7 @@
 				<button
 					type="button"
 					onclick={nextSection}
+					bind:this={nextSectionButtonElement}
 					disabled={!isSectionPassed(currentSection)}
 					class="flex-1 rounded-xl py-3.5 font-bold shadow-md transition-all active:scale-95 {isSectionPassed(currentSection) ? 'bg-gradient-to-r from-primary to-primary-light text-white hover:scale-[1.02] hover:shadow-lg' : 'bg-gray-200 text-gray-400 shadow-none'}"
 				>
@@ -566,3 +654,41 @@
 		</div>
 	{/if}
 </div>
+
+{#if showRegisterReminder && !data.user}
+	<div class="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/25 px-5 backdrop-blur-sm">
+		<div class="w-full max-w-sm rounded-3xl border border-white/70 bg-white p-6 shadow-2xl">
+			<div class="text-center">
+				<div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+					<img src={amazingFactsLogo} alt="Amazing Facts" class="h-8 w-8 object-contain" />
+				</div>
+				<h2 class="mt-4 text-2xl font-extrabold text-primary-dark">Daftar untuk Simpan Progres</h2>
+				<p class="mt-2 text-sm leading-relaxed text-gray-500">
+					Kamu bisa tetap membaca pelajaran ini, tapi progres, hasil tes akhir, peringkat, dan sertifikat hanya tersimpan kalau kamu daftar atau masuk.
+				</p>
+			</div>
+
+			<div class="mt-6 grid gap-3">
+				<a
+					href="/daftar"
+					class="block w-full rounded-xl bg-gradient-to-r from-primary to-primary-light py-3 text-center font-bold text-white shadow-md transition-all hover:shadow-lg"
+				>
+					Daftar Sekarang
+				</a>
+				<a
+					href="/masuk"
+					class="block w-full rounded-xl border-2 border-gray-200 py-3 text-center font-semibold text-gray-700 transition-colors hover:bg-gray-50"
+				>
+					Saya Sudah Punya Akun
+				</a>
+				<button
+					type="button"
+					onclick={() => showRegisterReminder = false}
+					class="w-full py-2 text-sm font-medium text-gray-400 transition-colors hover:text-gray-600"
+				>
+					Nanti Saja
+				</button>
+			</div>
+		</div>
+	</div>
+{/if}
