@@ -19,7 +19,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 		if (existing) {
 			db.update(lessonProgress)
-				.set({ currentSection })
+				.set({ currentSection, updatedAt: new Date() })
 				.where(eq(lessonProgress.id, existing.id))
 				.run();
 		} else {
@@ -28,6 +28,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 				userId,
 				lessonId,
 				currentSection,
+				updatedAt: new Date(),
 				completed: false
 			}).run();
 		}

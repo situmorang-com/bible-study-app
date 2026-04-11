@@ -33,7 +33,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 			if (existing) {
 				db.update(lessonProgress)
-					.set({ completed: true, completedAt: new Date() })
+					.set({ completed: true, updatedAt: new Date(), completedAt: new Date() })
 					.where(eq(lessonProgress.id, existing.id))
 					.run();
 			} else {
@@ -43,6 +43,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 					lessonId,
 					currentSection: 0,
 					completed: true,
+					updatedAt: new Date(),
 					completedAt: new Date()
 				}).run();
 			}

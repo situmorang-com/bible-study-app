@@ -5,6 +5,9 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ params, parent, url }) => {
 	const lessonId = parseInt(params.id);
 	const lesson = lessons.find(l => l.id === lessonId);
+	const reviewMode = url.searchParams.get('review') === '1';
+	const retryMode = url.searchParams.get('retry') === '1';
+	const startFromBeginning = reviewMode || retryMode;
 
 	if (!lesson) {
 		throw error(404, 'Pelajaran tidak ditemukan');
@@ -44,5 +47,13 @@ export const load: PageServerLoad = async ({ params, parent, url }) => {
 		}
 	}
 
-	return { lesson, progress, bestQuizScore, certificateUrl, origin: url.origin };
+	return {
+		lesson,
+		progress,
+		bestQuizScore,
+		certificateUrl,
+		origin: url.origin,
+		startFromBeginning,
+		reviewMode
+	};
 };

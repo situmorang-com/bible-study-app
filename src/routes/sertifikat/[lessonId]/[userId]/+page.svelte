@@ -18,6 +18,16 @@
 		`Nilai ${Math.round(data.attempt.percentage)}% — Firman Tuhan tetap teguh di tengah dunia yang penuh ketidakpastian. Yuk ikut belajar bareng.`
 	);
 	let ogImage = $derived(data.ogImageUrl);
+	let reviewButtonHref = $derived(
+		Math.round(data.attempt.percentage) < 100
+			? `/pelajaran/${data.lesson.id}?retry=1`
+			: `/pelajaran/${data.lesson.id}?review=1`
+	);
+	let reviewButtonLabel = $derived(
+		Math.round(data.attempt.percentage) < 100
+			? 'Belajar Lagi untuk Nilai Lebih Tinggi'
+			: 'Dalami Lagi Pelajaran'
+	);
 </script>
 
 <svelte:head>
@@ -67,10 +77,10 @@
 
 	<div class="mt-5 grid gap-3">
 		<a
-			href={`/pelajaran/${data.lesson.id}`}
+			href={reviewButtonHref}
 			class="block rounded-xl bg-gradient-to-r from-primary to-primary-light px-5 py-3 text-center text-sm font-bold text-white shadow-md transition-all active:scale-[0.98]"
 		>
-			Kembali ke Pelajaran
+			{reviewButtonLabel}
 		</a>
 		<a
 			href="/peringkat"

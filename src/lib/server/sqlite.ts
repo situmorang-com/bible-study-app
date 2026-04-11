@@ -32,6 +32,7 @@ const SCHEMA_SQL = `
 		lesson_id INTEGER NOT NULL,
 		completed INTEGER NOT NULL DEFAULT 0,
 		current_section INTEGER NOT NULL DEFAULT 0,
+		updated_at INTEGER NOT NULL DEFAULT (unixepoch()),
 		completed_at INTEGER,
 		UNIQUE(user_id, lesson_id)
 	);
@@ -112,6 +113,20 @@ const migrateUsersTable = (sqlite: Database.Database) => {
 	}
 };
 
+const migrateLessonProgressTable = (sqlite: Database.Database) => {
+	const columns = sqlite.prepare(`PRAGMA table_info(lesson_progress)`).all() as Array<{ name: string }>;
+	const hasUpdatedAt = columns.some((column) => column.name === 'updated_at');
+
+	if (!hasUpdatedAt) {
+		sqlite.exec(`ALTER TABLE lesson_progress ADD COLUMN updated_at INTEGER NOT NULL DEFAULT 0`);
+		sqlite.exec(`
+			UPDATE lesson_progress
+			SET updated_at = COALESCE(completed_at, CAST(strftime('%s', 'now') AS INTEGER))
+			WHERE updated_at = 0 OR updated_at IS NULL
+		`);
+	}
+};
+
 export const getDataDirectory = () =>
 	process.env.DATA_DIR ? resolve(process.env.DATA_DIR) : join(process.cwd(), 'data');
 
@@ -126,6 +141,7 @@ export const createSqliteClient = () => {
 	sqlite.pragma('foreign_keys = ON');
 	sqlite.exec(SCHEMA_SQL);
 	migrateUsersTable(sqlite);
+	migrateLessonProgressTable(sqlite);
 	seedLessonCatalog(sqlite);
 
 	return sqlite;

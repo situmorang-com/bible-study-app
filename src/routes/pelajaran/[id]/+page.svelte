@@ -8,6 +8,8 @@
 	let { data }: { data: PageData } = $props();
 
 	let lesson = $derived(data.lesson);
+	let reviewMode = $derived(data.reviewMode ?? false);
+	let startFromBeginning = $derived(data.startFromBeginning ?? false);
 	let totalSections = $derived(lesson.sections.length);
 	let totalQuiz = $derived(lesson.quiz.length);
 	let passThreshold = $derived(lesson.passThreshold ?? 70);
@@ -38,6 +40,7 @@
 	let checkpointMessage = $state('');
 
 	let showQuiz = $state(false);
+	let reviewFinished = $state(false);
 	let quizIndex = $state(0);
 	let selectedAnswer = $state<number | null>(null);
 	let showExplanation = $state(false);
@@ -79,6 +82,10 @@
 	}
 
 	function isSectionPassed(index: number) {
+		if (startFromBeginning) {
+			return !lesson.sections[index]?.check || sectionAnswered[index] === true;
+		}
+
 		return data.progress.completed || !lesson.sections[index]?.check || sectionAnswered[index] === true;
 	}
 
@@ -104,20 +111,25 @@
 	}
 
 	$effect(() => {
-		const progressKey = `${data.progress.currentSection}:${data.progress.completed}:${lesson.sections.length}`;
+		const progressKey = `${data.progress.currentSection}:${data.progress.completed}:${lesson.sections.length}:${startFromBeginning ? 'restart' : 'normal'}:${reviewMode ? 'review' : 'scored'}`;
 		if (syncedProgressKey === progressKey) return;
 
 		syncedProgressKey = progressKey;
-		currentSection = data.progress.currentSection;
-		furthestUnlocked = data.progress.completed ? lesson.sections.length - 1 : data.progress.currentSection;
+		currentSection = startFromBeginning ? 0 : data.progress.currentSection;
+		furthestUnlocked = startFromBeginning
+			? 0
+			: data.progress.completed
+				? lesson.sections.length - 1
+				: data.progress.currentSection;
 		sectionAnswered = Array.from({ length: lesson.sections.length }, (_, index) =>
-			data.progress.completed ? true : index < data.progress.currentSection
+			startFromBeginning ? false : data.progress.completed ? true : index < data.progress.currentSection
 		);
 		shuffledCheckpointOptions = lesson.sections.map((lessonSection) =>
 			lessonSection.check ? shuffleOptions(lessonSection.check.options) : null
 		);
 		shuffledQuizOptions = lesson.quiz.map((question) => shuffleOptions(question.options));
 		showQuiz = false;
+		reviewFinished = false;
 		resetQuizState();
 	});
 
@@ -146,12 +158,22 @@
 			const nextIndex = currentSection + 1;
 			currentSection = nextIndex;
 
-			if (nextIndex > furthestUnlocked) {
+			if (!startFromBeginning && nextIndex > furthestUnlocked) {
 				furthestUnlocked = nextIndex;
 				saveProgress(nextIndex);
 			}
 
+			if (startFromBeginning && nextIndex > furthestUnlocked) {
+				furthestUnlocked = nextIndex;
+			}
+
 			syncCheckpointState();
+			scrollToLessonTop();
+			return;
+		}
+
+		if (reviewMode) {
+			reviewFinished = true;
 			scrollToLessonTop();
 			return;
 		}
@@ -251,6 +273,8 @@
 	}
 
 	async function saveProgress(section: number) {
+		if (startFromBeginning) return;
+
 		try {
 			await fetch('/api/progress', {
 				method: 'POST',
@@ -341,7 +365,9 @@
 			<div class="flex-1">
 				<h1 class="text-sm font-bold text-gray-800">{lesson.icon} {lesson.title}</h1>
 				<p class="text-[10px] text-gray-400">
-					{#if !showQuiz}
+					{#if reviewFinished}
+						Peninjauan Selesai
+					{:else if !showQuiz}
 						Langkah {currentSection + 1} dari {totalSections}
 					{:else}
 						{finalAssessmentTitle}
@@ -355,15 +381,17 @@
 			{/if}
 		</div>
 
-		<div class="mt-2 flex gap-1.5">
+			<div class="mt-2 flex gap-1.5">
 			{#each lesson.sections as _, i}
 				<div class="h-1 flex-1 rounded-full transition-all duration-300 {i <= currentSection ? 'bg-accent' : 'bg-gray-200'}"></div>
 			{/each}
-			<div class="h-1 flex-1 rounded-full transition-all duration-300 {showQuiz ? 'bg-accent' : 'bg-gray-200'}"></div>
+			{#if !reviewMode}
+				<div class="h-1 flex-1 rounded-full transition-all duration-300 {showQuiz ? 'bg-accent' : 'bg-gray-200'}"></div>
+			{/if}
 		</div>
 	</div>
 
-	{#if !showQuiz}
+	{#if !showQuiz && !reviewFinished}
 		<div class="px-5 pb-8 pt-6">
 			<div class="text-center">
 				<div class="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br {lesson.color} text-5xl shadow-lg animate-celebrate">
@@ -466,13 +494,45 @@
 					disabled={!isSectionPassed(currentSection)}
 					class="flex-1 rounded-xl py-3.5 font-bold shadow-md transition-all active:scale-95 {isSectionPassed(currentSection) ? 'bg-gradient-to-r from-primary to-primary-light text-white hover:scale-[1.02] hover:shadow-lg' : 'bg-gray-200 text-gray-400 shadow-none'}"
 				>
-					{currentSection < totalSections - 1 ? 'Lanjut →' : `${finalAssessmentTitle} →`}
+					{#if currentSection < totalSections - 1}
+						Lanjut →
+					{:else if reviewMode}
+						Selesai Meninjau
+					{:else}
+						{finalAssessmentTitle} →
+					{/if}
 				</button>
 			</div>
 
 			{#if !isSectionPassed(currentSection)}
 				<p class="mt-3 text-center text-xs text-gray-500">Jawab pertanyaan bagian ini dengan benar untuk lanjut.</p>
 			{/if}
+		</div>
+	{:else if reviewFinished}
+		<div class="px-5 pb-8 pt-10 text-center">
+			<div class="animate-celebrate">
+				<span class="text-7xl">📘</span>
+			</div>
+			<h2 class="mt-4 text-2xl font-extrabold text-gray-800">Peninjauan Selesai</h2>
+			<p class="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-gray-500">
+				Kamu sudah meninjau ulang seluruh pelajaran dari awal. Mode ini tidak menampilkan tes ringkasan akhir dan tidak mengubah skor sertifikatmu.
+			</p>
+			<div class="mt-6 space-y-3">
+				{#if data.certificateUrl}
+					<a
+						href={data.certificateUrl}
+						class="block w-full rounded-xl bg-gradient-to-r from-primary to-primary-light py-3.5 text-center font-bold text-white shadow-md transition-all active:scale-95"
+					>
+						Kembali ke Sertifikat
+					</a>
+				{/if}
+				<a
+					href="/pelajaran"
+					class="block w-full rounded-xl bg-gray-100 py-3.5 text-center font-semibold text-gray-600 transition-all hover:bg-gray-200"
+				>
+					Kembali ke Daftar Pelajaran
+				</a>
+			</div>
 		</div>
 	{:else if !quizFinished}
 		<div class="px-5 pb-8 pt-6">

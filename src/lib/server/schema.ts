@@ -30,6 +30,7 @@ export const lessonProgress = sqliteTable('lesson_progress', {
 	lessonId: integer('lesson_id').notNull(),
 	completed: integer('completed', { mode: 'boolean' }).notNull().default(false),
 	currentSection: integer('current_section').notNull().default(0),
+	updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 	completedAt: integer('completed_at', { mode: 'timestamp' }),
 });
 

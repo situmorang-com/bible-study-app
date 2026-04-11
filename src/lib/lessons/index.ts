@@ -50,7 +50,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 1,
 		title: 'Masih Adakah yang Bisa Dipercaya?',
-		subtitle: '13 langkah sederhana untuk melihat bahwa Alkitab tetap dapat dipercaya',
+		subtitle: 'Pegangan saat dunia terasa tidak pasti',
 		icon: '📖',
 		color: 'from-blue-600 to-indigo-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -375,7 +375,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 		{
 			id: 2,
 			title: 'Apakah Tuhan Menciptakan Iblis?',
-			subtitle: '16 langkah sederhana untuk mengerti asal dosa dan akhir Setan',
+			subtitle: 'Memahami asal mula kejahatan',
 			icon: '😈',
 			color: 'from-red-600 to-rose-800',
 			finalAssessmentTitle: 'Ringkasan Akhir',
@@ -658,7 +658,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 		{
 			id: 3,
 			title: 'Diselamatkan dari Kematian Pasti',
-			subtitle: '14 langkah sederhana tentang kasih Allah dan keselamatan dalam Yesus',
+			subtitle: 'Harapan nyata untuk hidup baru',
 			icon: '🛟',
 			color: 'from-emerald-500 to-teal-700',
 			finalAssessmentTitle: 'Ringkasan Akhir',
@@ -914,7 +914,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 		{
 			id: 4,
 			title: 'Kota Raksasa di Angkasa',
-			subtitle: '17 langkah sederhana tentang kota suci dan bumi baru',
+			subtitle: 'Rumah kekal yang Tuhan siapkan',
 			icon: '🏰',
 			color: 'from-violet-500 to-purple-700',
 			finalAssessmentTitle: 'Ringkasan Akhir',
@@ -1212,7 +1212,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 		{
 			id: 5,
 			title: 'Kunci Pernikahan Bahagia',
-			subtitle: '18 langkah sederhana untuk rumah tangga yang dipimpin Tuhan',
+			subtitle: 'Dasar kuat untuk keluarga yang utuh',
 			icon: '💒',
 			color: 'from-pink-500 to-rose-600',
 			finalAssessmentTitle: 'Ringkasan Akhir',
@@ -1520,7 +1520,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 6,
 		title: 'Tertulis di Batu!',
-		subtitle: '10 langkah sederhana tentang hukum Allah yang penuh kasih',
+		subtitle: 'Hukum Tuhan tetap teguh',
 		icon: '📜',
 		color: 'from-stone-500 to-stone-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -1674,7 +1674,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 7,
 		title: 'Hari yang Hilang dari Sejarah',
-		subtitle: '10 langkah sederhana tentang Sabat Alkitab',
+		subtitle: 'Menemukan hari kudus yang benar',
 		icon: '📅',
 		color: 'from-sky-500 to-blue-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -1828,7 +1828,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 8,
 		title: 'Pembebasan Terakhir',
-		subtitle: '10 langkah sederhana tentang kedatangan Yesus yang kedua',
+		subtitle: 'Harapan pasti saat Yesus datang',
 		icon: '☁️',
 		color: 'from-amber-500 to-orange-600',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -1932,7 +1932,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 9,
 		title: 'Kemurnian dan Kuasa!',
-		subtitle: '10 langkah sederhana tentang Roh Kudus dan hidup suci',
+		subtitle: 'Kuasa Roh untuk hidup suci',
 		icon: '🔥',
 		color: 'from-orange-500 to-red-600',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2036,7 +2036,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 10,
 		title: 'Apakah Orang Mati Benar-benar Mati?',
-		subtitle: '10 langkah sederhana tentang kematian menurut Alkitab',
+		subtitle: 'Kebenaran Alkitab tentang kematian',
 		icon: '💤',
 		color: 'from-slate-500 to-gray-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2140,7 +2140,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 11,
 		title: 'Apakah Iblis yang Menguasai Neraka?',
-		subtitle: '8 langkah sederhana tentang hukuman akhir menurut Alkitab',
+		subtitle: 'Meluruskan gambaran yang keliru',
 		icon: '🔥',
 		color: 'from-red-700 to-red-900',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2228,7 +2228,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 12,
 		title: '1.000 Tahun Damai',
-		subtitle: '8 langkah sederhana tentang milenium menurut Alkitab',
+		subtitle: 'Masa depan yang Tuhan tetapkan',
 		icon: '⏳',
 		color: 'from-indigo-500 to-violet-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2316,7 +2316,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 13,
 		title: 'Rencana Kesehatan Gratis dari Allah',
-		subtitle: '8 langkah sederhana tentang kesehatan menurut Alkitab',
+		subtitle: 'Jalan sederhana menuju hidup sehat',
 		icon: '🥗',
 		color: 'from-green-500 to-emerald-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2404,7 +2404,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 14,
 		title: 'Apakah Ketaatan itu Legalisme?',
-		subtitle: '8 langkah sederhana tentang kasih karunia dan ketaatan',
+		subtitle: 'Taat karena kasih, bukan beban',
 		icon: '⚖️',
 		color: 'from-teal-500 to-cyan-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2494,7 +2494,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 15,
 		title: 'Siapakah Antikristus?',
-		subtitle: '8 langkah sederhana mengenali kuasa antikristus',
+		subtitle: 'Mengenali kuasa penyesatan',
 		icon: '🔍',
 		color: 'from-red-500 to-rose-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2580,7 +2580,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 16,
 		title: 'Pesan Malaikat dari Angkasa',
-		subtitle: '8 langkah sederhana tentang tiga pesan malaikat',
+		subtitle: 'Panggilan Tuhan untuk akhir zaman',
 		icon: '👼',
 		color: 'from-yellow-500 to-amber-600',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2668,7 +2668,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 17,
 		title: 'Allah yang Menggambar Rencana',
-		subtitle: '8 langkah sederhana tentang bait suci dan keselamatan',
+		subtitle: 'Bait suci dan rencana keselamatan',
 		icon: '🏛️',
 		color: 'from-amber-600 to-yellow-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2756,7 +2756,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 18,
 		title: 'Tepat Waktu!',
-		subtitle: '8 langkah sederhana tentang nubuat waktu Daniel',
+		subtitle: 'Nubuat Tuhan digenapi tepat waktu',
 		icon: '⏰',
 		color: 'from-blue-600 to-indigo-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2844,7 +2844,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 19,
 		title: 'Penghakiman Terakhir',
-		subtitle: '8 langkah sederhana tentang penghakiman Allah',
+		subtitle: 'Keadilan Tuhan yang sempurna',
 		icon: '⚖️',
 		color: 'from-gray-600 to-slate-800',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -2932,7 +2932,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 20,
 		title: 'Tanda Binatang',
-		subtitle: '8 langkah sederhana tentang ujian kesetiaan akhir zaman',
+		subtitle: 'Tanda binatang dan ujian penyembahan',
 		icon: '⚠️',
 		color: 'from-red-600 to-red-800',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -3018,7 +3018,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 21,
 		title: 'Amerika dalam Nubuat Alkitab',
-		subtitle: '4 langkah sederhana tentang kuasa dari bumi di Wahyu 13',
+		subtitle: 'Peran bangsa besar dalam nubuatan',
 		icon: '🗽',
 		color: 'from-blue-700 to-blue-900',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -3070,7 +3070,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 22,
 		title: 'Wanita yang "Lain"',
-		subtitle: '4 langkah sederhana tentang Babel dalam kitab Wahyu',
+		subtitle: 'Keluar dari kebingungan rohani babel',
 		icon: '👸',
 		color: 'from-purple-600 to-purple-800',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -3120,7 +3120,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 23,
 		title: 'Mempelai Kristus',
-		subtitle: '4 langkah sederhana tentang gereja sejati Allah',
+		subtitle: 'Ciri gereja Tuhan yang benar',
 		icon: '💍',
 		color: 'from-rose-400 to-pink-600',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -3172,7 +3172,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 24,
 		title: 'Apakah Allah Mengilhami Peramal?',
-		subtitle: '4 langkah sederhana tentang bahaya okultisme',
+		subtitle: 'Membedakan suara Tuhan dan tipuan',
 		icon: '🔮',
 		color: 'from-violet-700 to-indigo-900',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -3226,7 +3226,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 25,
 		title: 'Dalam Tuhan Kita Percaya',
-		subtitle: '4 langkah sederhana tentang penatalayanan dan persepuluhan',
+		subtitle: 'Belajar setia dalam berkat Tuhan',
 		icon: '💰',
 		color: 'from-emerald-600 to-green-700',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -3282,7 +3282,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 26,
 		title: 'Kasih yang Mengubahkan',
-		subtitle: '5 langkah sederhana tentang hidup baru dalam kasih Allah',
+		subtitle: 'Kasih Tuhan yang mengubah hidup',
 		icon: '🦋',
 		color: 'from-pink-500 to-purple-600',
 		finalAssessmentTitle: 'Ringkasan Akhir',
@@ -3344,7 +3344,7 @@ const baseLessons: Omit<Lesson, 'source'>[] = [
 	{
 		id: 27,
 		title: 'Tidak Ada Jalan Kembali',
-		subtitle: '6 langkah sederhana untuk mengambil keputusan bagi Yesus',
+		subtitle: 'Tetap setia sampai akhir',
 		icon: '🚀',
 		color: 'from-indigo-600 to-blue-800',
 		finalAssessmentTitle: 'Ringkasan Akhir',
