@@ -77,6 +77,14 @@
 
 	<div class="mt-5 grid gap-3">
 		<a
+			href={data.printPdfUrl}
+			target="_blank"
+			rel="noopener"
+			class="block rounded-xl bg-accent px-5 py-3 text-center text-sm font-bold text-primary-dark shadow-md transition-all active:scale-[0.98]"
+		>
+			Unduh Sertifikat untuk Cetak (PDF)
+		</a>
+		<a
 			href={reviewButtonHref}
 			class="block rounded-xl bg-gradient-to-r from-primary to-primary-light px-5 py-3 text-center text-sm font-bold text-white shadow-md transition-all active:scale-[0.98]"
 		>

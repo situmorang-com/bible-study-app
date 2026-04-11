@@ -54,7 +54,8 @@ export const load: PageServerLoad = async ({ params, url }) => {
 			attempt: { ...passingAttempt, completedAt: completedAtMs },
 			origin: url.origin,
 			certificateUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}`,
-			ogImageUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}/og.png`
+			ogImageUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}/og.png`,
+			printPdfUrl: `/sertifikat/${lessonId}/${params.userId}/print.pdf`
 		};
 	} catch (err) {
 		if (err && typeof err === 'object' && 'status' in err) {

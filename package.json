@@ -30,11 +30,11 @@
 		"vite": "^8.0.7"
 	},
 	"dependencies": {
-		"@fontsource/playfair-display": "^5.2.8",
 		"@resvg/resvg-js": "^2.6.2",
 		"bcryptjs": "^3.0.3",
 		"better-sqlite3": "^12.8.0",
 		"drizzle-orm": "^0.45.2",
+		"pdf-lib": "^1.17.1",
 		"qrcode": "^1.5.4",
 		"satori": "^0.26.0",
 		"uuid": "^13.0.0"
