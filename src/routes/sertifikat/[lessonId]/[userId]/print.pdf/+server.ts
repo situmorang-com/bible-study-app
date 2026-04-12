@@ -51,6 +51,16 @@ function el(type: string, props: Record<string, unknown>): any {
 	return { type, props, key: null };
 }
 
+function getUserNameFontSize(userName: string) {
+	const normalizedLength = userName.trim().replace(/\s+/g, ' ').length;
+
+	if (normalizedLength <= 14) return 100;
+	if (normalizedLength <= 20) return 88;
+	if (normalizedLength <= 26) return 76;
+	if (normalizedLength <= 32) return 68;
+	return 60;
+}
+
 function buildCertificate(opts: {
 	userName: string;
 	lessonTitle: string;
@@ -60,6 +70,7 @@ function buildCertificate(opts: {
 	qrDataUri: string;
 }) {
 	const { userName, lessonTitle, issueDate, certId, qrDataUri } = opts;
+	const userNameFontSize = getUserNameFontSize(userName);
 
 	return el('div', {
 		style: {
@@ -109,27 +120,6 @@ function buildCertificate(opts: {
 								height: 68,
 								style: { display: 'flex', filter: 'brightness(0) invert(1)' }
 							}),
-							el('div', {
-								style: {
-									display: 'flex',
-									flexDirection: 'column',
-									alignItems: 'center'
-								},
-								children: [
-									el('div', {
-										style: {
-											fontSize: '13px',
-											fontFamily: 'Inter',
-											fontWeight: 700,
-											letterSpacing: '10px',
-											textTransform: 'uppercase',
-											color: '#fff8e8',
-											display: 'flex'
-										},
-										children: 'SERTIFIKAT'
-									})
-								]
-							}),
 							el('img', {
 								src: adventistDataUri,
 								width: 220,
@@ -146,7 +136,7 @@ function buildCertificate(opts: {
 							flexDirection: 'column',
 							alignItems: 'center',
 							textAlign: 'center',
-							padding: '50px 80px 40px'
+							padding: '88px 80px 16px'
 						},
 						children: [
 							// Decorative diamond divider
@@ -155,7 +145,7 @@ function buildCertificate(opts: {
 									display: 'flex',
 									alignItems: 'center',
 									gap: '18px',
-									marginBottom: '28px'
+									marginBottom: '24px'
 								},
 								children: [
 									el('div', { style: { width: '180px', height: '1px', backgroundColor: '#b8852a', display: 'flex' } }),
@@ -164,6 +154,19 @@ function buildCertificate(opts: {
 									el('div', { style: { width: '12px', height: '12px', backgroundColor: '#b8852a', transform: 'rotate(45deg)', display: 'flex' } }),
 									el('div', { style: { width: '180px', height: '1px', backgroundColor: '#b8852a', display: 'flex' } })
 								]
+							}),
+							el('div', {
+								style: {
+									fontSize: '34px',
+									fontFamily: 'Inter',
+									fontWeight: 700,
+									letterSpacing: '18px',
+									textTransform: 'uppercase',
+									color: '#b8852a',
+									display: 'flex',
+									marginBottom: '22px'
+								},
+								children: 'SERTIFIKAT'
 							}),
 							el('div', {
 								style: {
@@ -188,7 +191,7 @@ function buildCertificate(opts: {
 							}),
 							el('div', {
 								style: {
-									fontSize: '100px',
+									fontSize: `${userNameFontSize}px`,
 									fontFamily: 'Playfair',
 									fontWeight: 700,
 									fontStyle: 'italic',
@@ -219,7 +222,7 @@ function buildCertificate(opts: {
 									fontSize: '21px',
 									fontFamily: 'Inter',
 									color: '#4b5563',
-									marginTop: '28px',
+									marginTop: '48px',
 									maxWidth: '950px',
 									display: 'flex',
 									textAlign: 'center',
