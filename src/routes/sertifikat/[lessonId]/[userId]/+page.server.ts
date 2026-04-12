@@ -2,6 +2,8 @@ import { lessons } from '$lib/lessons';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
+const CERTIFICATE_ASSET_VERSION = 'v4';
+
 export const load: PageServerLoad = async ({ params, url }) => {
 	const lessonId = Number.parseInt(params.lessonId, 10);
 	const lesson = lessons.find((entry) => entry.id === lessonId);
@@ -54,8 +56,8 @@ export const load: PageServerLoad = async ({ params, url }) => {
 			attempt: { ...passingAttempt, completedAt: completedAtMs },
 			origin: url.origin,
 			certificateUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}`,
-			ogImageUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}/og.png`,
-			printPdfUrl: `/sertifikat/${lessonId}/${params.userId}/print.pdf`
+			ogImageUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}/og.png?v=${CERTIFICATE_ASSET_VERSION}`,
+			printPdfUrl: `/sertifikat/${lessonId}/${params.userId}/print.pdf?v=${CERTIFICATE_ASSET_VERSION}`
 		};
 	} catch (err) {
 		if (err && typeof err === 'object' && 'status' in err) {

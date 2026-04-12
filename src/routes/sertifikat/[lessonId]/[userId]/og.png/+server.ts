@@ -13,7 +13,7 @@ import {
 } from '$lib/server/certificate-render';
 import type { RequestHandler } from './$types';
 
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 
 export const GET: RequestHandler = async ({ params, fetch, setHeaders, url }) => {
 	const lessonId = Number.parseInt(params.lessonId, 10);
