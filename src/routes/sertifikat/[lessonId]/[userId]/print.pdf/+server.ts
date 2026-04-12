@@ -26,6 +26,8 @@ type SatoriFont = {
 };
 
 let fontsCache: SatoriFont[] | null = null;
+// Cache version — bump to invalidate
+const CACHE_VERSION = 'v2';
 
 async function loadFonts(fetch: typeof globalThis.fetch): Promise<SatoriFont[]> {
 	if (fontsCache) return fontsCache;
@@ -64,21 +66,21 @@ function buildCertificate(opts: {
 			width: `${DESIGN_W}px`,
 			height: `${DESIGN_H}px`,
 			display: 'flex',
-			padding: '40px',
-			backgroundColor: '#fdf8ec',
+			padding: '36px',
+			backgroundColor: '#ffffff',
 			fontFamily: 'Playfair',
-			color: '#0f1f33',
-			position: 'relative'
+			color: '#0f1f33'
 		},
+		// Outer double-gold border shell
 		children: el('div', {
 			style: {
 				flex: 1,
 				display: 'flex',
 				flexDirection: 'column',
-				borderWidth: '6px',
-				borderStyle: 'double',
+				borderWidth: '5px',
+				borderStyle: 'solid',
 				borderColor: '#b8852a',
-				padding: '30px'
+				padding: '10px'
 			},
 			children: el('div', {
 				style: {
@@ -88,143 +90,25 @@ function buildCertificate(opts: {
 					borderWidth: '1px',
 					borderStyle: 'solid',
 					borderColor: '#b8852a',
-					padding: '60px 80px',
-					alignItems: 'center',
-					textAlign: 'center',
-					position: 'relative'
+					padding: '0'
 				},
 				children: [
-					// Decorative diamonds at top
+					// ── Gold header band ──
 					el('div', {
 						style: {
-							display: 'flex',
-							gap: '14px',
-							alignItems: 'center',
-							marginBottom: '20px'
-						},
-						children: [
-							el('div', {
-								style: {
-									width: '14px',
-									height: '14px',
-									backgroundColor: '#b8852a',
-									transform: 'rotate(45deg)',
-									display: 'flex'
-								}
-							}),
-							el('div', {
-								style: {
-									width: '240px',
-									height: '1px',
-									backgroundColor: '#b8852a',
-									display: 'flex'
-								}
-							}),
-							el('div', {
-								style: {
-									width: '20px',
-									height: '20px',
-									backgroundColor: '#b8852a',
-									transform: 'rotate(45deg)',
-									display: 'flex'
-								}
-							}),
-							el('div', {
-								style: {
-									width: '240px',
-									height: '1px',
-									backgroundColor: '#b8852a',
-									display: 'flex'
-								}
-							}),
-							el('div', {
-								style: {
-									width: '14px',
-									height: '14px',
-									backgroundColor: '#b8852a',
-									transform: 'rotate(45deg)',
-									display: 'flex'
-								}
-							})
-						]
-					}),
-					el('div', {
-						style: {
-							fontSize: '22px',
-							fontWeight: 400,
-							letterSpacing: '14px',
-							textTransform: 'uppercase',
-							color: '#b8852a',
-							marginTop: '10px',
-							display: 'flex',
-							fontFamily: 'Inter'
-						},
-						children: 'SERTIFIKAT'
-					}),
-					el('div', {
-						style: {
-							fontSize: '72px',
-							fontWeight: 900,
-							color: '#0f1f33',
-							marginTop: '4px',
-							display: 'flex'
-						},
-						children: 'Pendalaman Alkitab'
-					}),
-					el('div', {
-						style: {
-							fontSize: '20px',
-							fontFamily: 'Inter',
-							fontWeight: 400,
-							color: '#6b7280',
-							marginTop: '30px',
-							display: 'flex'
-						},
-						children: 'Dengan bangga diberikan kepada'
-					}),
-					el('div', {
-						style: {
-							fontSize: '96px',
-							fontFamily: 'Playfair',
-							fontWeight: 700,
-							fontStyle: 'italic',
-							color: '#0f1f33',
-							marginTop: '20px',
-							paddingBottom: '12px',
-							display: 'flex'
-						},
-						children: userName
-					}),
-					el('div', {
-						style: {
-							width: '520px',
-							height: '1px',
 							backgroundColor: '#b8852a',
-							display: 'flex'
-						}
-					}),
-					el('div', {
-						style: {
-							fontSize: '22px',
-							fontFamily: 'Inter',
-							color: '#4b5563',
-							marginTop: '30px',
-							maxWidth: '900px',
-							display: 'flex',
-							textAlign: 'center'
-						},
-						children: `Telah menyelesaikan pelajaran "${lessonTitle}"`
-					}),
-					// Footer with signatures and QR
-					el('div', {
-						style: {
-							marginTop: '80px',
+							padding: '20px 60px',
 							display: 'flex',
 							justifyContent: 'space-between',
-							width: '100%',
-							alignItems: 'flex-end'
+							alignItems: 'center'
 						},
 						children: [
+							el('img', {
+								src: amazingFactsDataUri,
+								width: 230,
+								height: 68,
+								style: { display: 'flex', filter: 'brightness(0) invert(1)' }
+							}),
 							el('div', {
 								style: {
 									display: 'flex',
@@ -234,87 +118,239 @@ function buildCertificate(opts: {
 								children: [
 									el('div', {
 										style: {
-											width: '260px',
-											borderTop: '1px solid #0f1f33',
-											paddingTop: '8px',
-											fontSize: '14px',
+											fontSize: '13px',
 											fontFamily: 'Inter',
 											fontWeight: 700,
-											color: '#0f1f33',
-											display: 'flex',
-											justifyContent: 'center'
-										},
-										children: 'Amazing Facts'
-									}),
-									el('div', {
-										style: {
-											fontSize: '12px',
-											fontFamily: 'Inter',
-											color: '#6b7280',
-											marginTop: '2px',
+											letterSpacing: '10px',
+											textTransform: 'uppercase',
+											color: '#fff8e8',
 											display: 'flex'
 										},
-										children: 'Penyelenggara'
+										children: 'SERTIFIKAT'
 									})
 								]
 							}),
-							// Center: QR
+							el('img', {
+								src: adventistDataUri,
+								width: 220,
+								height: 68,
+								style: { display: 'flex', filter: 'brightness(0) invert(1)', opacity: 0.9 }
+							})
+						]
+					}),
+					// ── Main body ──
+					el('div', {
+						style: {
+							flex: 1,
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+							textAlign: 'center',
+							padding: '50px 80px 40px'
+						},
+						children: [
+							// Decorative diamond divider
 							el('div', {
 								style: {
 									display: 'flex',
-									flexDirection: 'column',
-									alignItems: 'center'
+									alignItems: 'center',
+									gap: '18px',
+									marginBottom: '28px'
 								},
 								children: [
-									el('img', {
-										src: qrDataUri,
-										width: 100,
-										height: 100,
-										style: { display: 'flex', marginBottom: '8px' }
-									}),
+									el('div', { style: { width: '180px', height: '1px', backgroundColor: '#b8852a', display: 'flex' } }),
+									el('div', { style: { width: '12px', height: '12px', backgroundColor: '#b8852a', transform: 'rotate(45deg)', display: 'flex' } }),
+									el('div', { style: { width: '20px', height: '20px', backgroundColor: '#b8852a', transform: 'rotate(45deg)', display: 'flex' } }),
+									el('div', { style: { width: '12px', height: '12px', backgroundColor: '#b8852a', transform: 'rotate(45deg)', display: 'flex' } }),
+									el('div', { style: { width: '180px', height: '1px', backgroundColor: '#b8852a', display: 'flex' } })
+								]
+							}),
+							el('div', {
+								style: {
+									fontSize: '58px',
+									fontWeight: 700,
+									color: '#0f1f33',
+									display: 'flex',
+									lineHeight: 1.1
+								},
+								children: 'Pendalaman Alkitab'
+							}),
+							el('div', {
+								style: {
+									fontSize: '18px',
+									fontFamily: 'Inter',
+									fontWeight: 400,
+									color: '#6b7280',
+									marginTop: '28px',
+									display: 'flex'
+								},
+								children: 'Dengan bangga diberikan kepada'
+							}),
+							el('div', {
+								style: {
+									fontSize: '100px',
+									fontFamily: 'Playfair',
+									fontWeight: 700,
+									fontStyle: 'italic',
+									color: '#0f1f33',
+									marginTop: '10px',
+									lineHeight: 1.05,
+									display: 'flex',
+									maxWidth: '1200px'
+								},
+								children: userName
+							}),
+							// Gold rule under name
+							el('div', {
+								style: {
+									display: 'flex',
+									alignItems: 'center',
+									gap: '14px',
+									marginTop: '16px'
+								},
+								children: [
+									el('div', { style: { width: '120px', height: '1px', backgroundColor: '#d4a843', display: 'flex' } }),
+									el('div', { style: { width: '8px', height: '8px', backgroundColor: '#d4a843', transform: 'rotate(45deg)', display: 'flex' } }),
+									el('div', { style: { width: '120px', height: '1px', backgroundColor: '#d4a843', display: 'flex' } })
+								]
+							}),
+							el('div', {
+								style: {
+									fontSize: '21px',
+									fontFamily: 'Inter',
+									color: '#4b5563',
+									marginTop: '28px',
+									maxWidth: '950px',
+									display: 'flex',
+									textAlign: 'center',
+									lineHeight: 1.5
+								},
+								children: `Telah menyelesaikan pelajaran "${lessonTitle}"`
+							})
+						]
+					}),
+					// ── Gold footer band ──
+					el('div', {
+						style: {
+							backgroundColor: '#f7f0e0',
+							borderTop: '1px solid #b8852a',
+							padding: '18px 60px',
+							display: 'flex',
+							justifyContent: 'space-between',
+							alignItems: 'center'
+						},
+						children: [
+							// Left: date
+							el('div', {
+								style: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start' },
+								children: [
 									el('div', {
 										style: {
 											fontSize: '11px',
 											fontFamily: 'Inter',
 											fontWeight: 700,
-											color: '#6b7280',
-											marginTop: '2px',
-											display: 'flex'
-										},
-										children: certId
-									})
-								]
-							}),
-							el('div', {
-								style: {
-									display: 'flex',
-									flexDirection: 'column',
-									alignItems: 'center'
-								},
-								children: [
-									el('div', {
-										style: {
-											width: '260px',
-											borderTop: '1px solid #0f1f33',
-											paddingTop: '8px',
-											fontSize: '14px',
-											fontFamily: 'Inter',
-											fontWeight: 700,
-											color: '#0f1f33',
-											display: 'flex',
-											justifyContent: 'center'
-										},
-										children: issueDate
-									}),
-									el('div', {
-										style: {
-											fontSize: '12px',
-											fontFamily: 'Inter',
-											color: '#6b7280',
-											marginTop: '2px',
+											letterSpacing: '3px',
+											textTransform: 'uppercase',
+											color: '#8a6318',
 											display: 'flex'
 										},
 										children: 'Tanggal Penerbitan'
+									}),
+									el('div', {
+										style: {
+											fontSize: '18px',
+											fontFamily: 'Inter',
+											fontWeight: 700,
+											color: '#0f1f33',
+											marginTop: '4px',
+											display: 'flex'
+										},
+										children: issueDate
+									})
+								]
+							}),
+							// Center: QR + cert ID
+							el('div', {
+								style: {
+									display: 'flex',
+									alignItems: 'center',
+									gap: '14px'
+								},
+								children: [
+									el('img', {
+										src: qrDataUri,
+										width: 90,
+										height: 90,
+										style: { display: 'flex' }
+									}),
+									el('div', {
+										style: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start' },
+										children: [
+											el('div', {
+												style: {
+													fontSize: '11px',
+													fontFamily: 'Inter',
+													fontWeight: 700,
+													letterSpacing: '2px',
+													textTransform: 'uppercase',
+													color: '#8a6318',
+													display: 'flex'
+												},
+												children: 'Verifikasi Sertifikat'
+											}),
+											el('div', {
+												style: {
+													fontSize: '13px',
+													fontFamily: 'Inter',
+													fontWeight: 700,
+													color: '#0f1f33',
+													marginTop: '4px',
+													display: 'flex'
+												},
+												children: certId
+											}),
+											el('div', {
+												style: {
+													fontSize: '11px',
+													fontFamily: 'Inter',
+													color: '#6b7280',
+													marginTop: '2px',
+													display: 'flex'
+												},
+												children: 'Scan QR untuk cek keaslian'
+											})
+										]
+									})
+								]
+							}),
+							// Right: tagline
+							el('div', {
+								style: { display: 'flex', flexDirection: 'column', alignItems: 'flex-end' },
+								children: [
+									el('div', {
+										style: {
+											fontSize: '11px',
+											fontFamily: 'Inter',
+											fontWeight: 700,
+											letterSpacing: '3px',
+											textTransform: 'uppercase',
+											color: '#8a6318',
+											display: 'flex'
+										},
+										children: 'Moto'
+									}),
+									el('div', {
+										style: {
+											fontSize: '16px',
+											fontFamily: 'Playfair',
+											fontStyle: 'italic',
+											color: '#0f1f33',
+											marginTop: '4px',
+											display: 'flex',
+											maxWidth: '280px',
+											textAlign: 'right'
+										},
+										children: 'Firman Tuhan Tetap Teguh'
 									})
 								]
 							})
@@ -429,7 +465,8 @@ export const GET: RequestHandler = async ({ params, fetch, url, setHeaders }) =>
 	setHeaders({
 		'Content-Type': 'application/pdf',
 		'Content-Disposition': `inline; filename="sertifikat-${certId}.pdf"`,
-		'Cache-Control': 'public, max-age=31536000, immutable'
+		'Cache-Control': `public, max-age=31536000, immutable`,
+		'ETag': `"${CACHE_VERSION}-${certId}"`
 	});
 
 	return new Response(new Uint8Array(pdfBytes));
