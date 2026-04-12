@@ -710,7 +710,12 @@
 				</div>
 
 				<div class="mt-5">
-					<ShareButtons title={certificateTitle} description={certificateDescription} url={data.certificateUrl} />
+					<ShareButtons
+						title={certificateTitle}
+						description={certificateDescription}
+						url={data.certificateUrl}
+						imageUrl={`/sertifikat/${data.lesson.id}/${data.user.id}/og.png`}
+					/>
 				</div>
 			{/if}
 

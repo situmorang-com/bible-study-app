@@ -2,11 +2,13 @@
 	let {
 		title,
 		description,
-		url
+		url,
+		imageUrl
 	}: {
 		title: string;
 		description: string;
 		url: string;
+		imageUrl: string;
 	} = $props();
 
 	let status = $state('');
@@ -28,12 +30,27 @@
 		);
 	}
 
+	async function getShareFile() {
+		const response = await fetch(imageUrl);
+		if (!response.ok) throw new Error('Gagal mengambil gambar sertifikat.');
+
+		const blob = await response.blob();
+		return new File([blob], 'sertifikat.png', { type: 'image/png' });
+	}
+
 	async function shareToMobileApp(label: string) {
 		if (navigator.share) {
 			try {
-				await navigator.share({ title, text: description, url });
-				status = `Pilih ${label} dari menu bagikan di perangkatmu.`;
-				return;
+				const file = await getShareFile();
+				if (navigator.canShare?.({ files: [file] })) {
+					await navigator.share({
+						title,
+						text: description,
+						files: [file]
+					});
+					status = `Gambar sertifikat dibagikan ke ${label}.`;
+					return;
+				}
 			} catch {
 				status = '';
 			}
