@@ -2,7 +2,7 @@
 	import amazingFactsLogo from '$lib/assets/amazing-facts-logo.svg';
 	import CertificateCard from '$lib/components/CertificateCard.svelte';
 	import ShareButtons from '$lib/components/ShareButtons.svelte';
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -111,18 +111,28 @@
 	}
 
 	$effect(() => {
-		const progressKey = `${data.progress.currentSection}:${data.progress.completed}:${lesson.sections.length}:${startFromBeginning ? 'restart' : 'normal'}:${reviewMode ? 'review' : 'scored'}`;
+		const progressKey = `${data.progress.currentSection}:${data.progress.lastViewedSection}:${data.progress.completed}:${lesson.sections.length}:${startFromBeginning ? 'restart' : 'normal'}:${reviewMode ? 'review' : 'scored'}`;
 		if (syncedProgressKey === progressKey) return;
 
 		syncedProgressKey = progressKey;
-		currentSection = startFromBeginning ? 0 : data.progress.currentSection;
-		furthestUnlocked = startFromBeginning
+		const lastSectionIndex = Math.max(lesson.sections.length - 1, 0);
+		const persistedLastViewedSection = Math.min(
+			Math.max(data.progress.lastViewedSection ?? 0, 0),
+			lastSectionIndex
+		);
+		const persistedFurthestUnlocked = startFromBeginning
 			? 0
 			: data.progress.completed
-				? lesson.sections.length - 1
-				: data.progress.currentSection;
+				? lastSectionIndex
+				: Math.min(
+					Math.max(data.progress.currentSection ?? 0, persistedLastViewedSection),
+					lastSectionIndex
+				);
+
+		currentSection = startFromBeginning ? 0 : persistedLastViewedSection;
+		furthestUnlocked = persistedFurthestUnlocked;
 		sectionAnswered = Array.from({ length: lesson.sections.length }, (_, index) =>
-			startFromBeginning ? false : data.progress.completed ? true : index < data.progress.currentSection
+			startFromBeginning ? false : data.progress.completed ? true : index < persistedFurthestUnlocked
 		);
 		shuffledCheckpointOptions = lesson.sections.map((lessonSection) =>
 			lessonSection.check ? shuffleOptions(lessonSection.check.options) : null
@@ -143,10 +153,20 @@
 		}
 	});
 
+	onMount(() => {
+		if (!data.user || startFromBeginning) return;
+		void (async () => {
+			await tick();
+			await saveProgress(currentSection, furthestUnlocked);
+		})();
+	});
+
 	function prevSection() {
 		if (currentSection > 0) {
-			currentSection--;
+			const previousIndex = currentSection - 1;
+			currentSection = previousIndex;
 			syncCheckpointState();
+			void saveProgress(previousIndex, furthestUnlocked);
 			scrollToLessonTop();
 		}
 	}
@@ -156,18 +176,21 @@
 
 		if (currentSection < totalSections - 1) {
 			const nextIndex = currentSection + 1;
+			let nextFurthestUnlocked = furthestUnlocked;
 			currentSection = nextIndex;
 
 			if (!startFromBeginning && nextIndex > furthestUnlocked) {
+				nextFurthestUnlocked = nextIndex;
 				furthestUnlocked = nextIndex;
-				saveProgress(nextIndex);
 			}
 
 			if (startFromBeginning && nextIndex > furthestUnlocked) {
+				nextFurthestUnlocked = nextIndex;
 				furthestUnlocked = nextIndex;
 			}
 
 			syncCheckpointState();
+			void saveProgress(nextIndex, nextFurthestUnlocked);
 			scrollToLessonTop();
 			return;
 		}
@@ -272,14 +295,19 @@
 		window.location.href = '/';
 	}
 
-	async function saveProgress(section: number) {
-		if (startFromBeginning) return;
+	async function saveProgress(lastViewedSection: number, unlockedSection: number = furthestUnlocked) {
+		if (startFromBeginning || !data.user) return;
 
 		try {
 			await fetch('/api/progress', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ lessonId: lesson.id, currentSection: section })
+				body: JSON.stringify({
+					lessonId: lesson.id,
+					currentSection: unlockedSection,
+					lastViewedSection,
+					viewedAt: new Date().toISOString()
+				})
 			});
 		} catch {
 			// silent

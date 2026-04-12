@@ -7,6 +7,10 @@
 	function isCompleted(lessonId: number): boolean {
 		return data.completedLessons?.includes(lessonId) ?? false;
 	}
+
+	function isStarted(lessonId: number): boolean {
+		return data.startedLessons?.includes(lessonId) ?? false;
+	}
 </script>
 
 <div class="page-transition px-5 pt-8">
@@ -31,6 +35,8 @@
 						<h3 class="font-bold text-gray-800 text-sm">{lesson.title}</h3>
 						{#if isCompleted(lesson.id)}
 							<span class="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-green-700">Selesai</span>
+						{:else if isStarted(lesson.id)}
+							<span class="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-amber-700">Lanjut</span>
 						{/if}
 					</div>
 					<p class="mt-0.5 text-xs text-gray-500">{lesson.subtitle}</p>

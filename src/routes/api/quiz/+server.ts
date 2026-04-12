@@ -42,6 +42,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 					userId,
 					lessonId,
 					currentSection: 0,
+					lastViewedSection: 0,
 					completed: true,
 					updatedAt: new Date(),
 					completedAt: new Date()

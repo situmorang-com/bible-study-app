@@ -6,7 +6,23 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	const userId = cookies.get('userId');
 	if (!userId) return json({ error: 'Not authenticated' }, { status: 401 });
 
-	const { lessonId, currentSection } = await request.json();
+	const { lessonId, currentSection, lastViewedSection, viewedAt } = await request.json();
+	const parsedLessonId = Number(lessonId);
+	const parsedCurrentSection = Number(currentSection);
+	const parsedLastViewedSection = Number(lastViewedSection ?? currentSection);
+	const viewedAtDate = viewedAt ? new Date(viewedAt) : new Date();
+
+	if (
+		!Number.isInteger(parsedLessonId) ||
+		!Number.isInteger(parsedCurrentSection) ||
+		!Number.isInteger(parsedLastViewedSection) ||
+		Number.isNaN(viewedAtDate.getTime()) ||
+		parsedLessonId < 1 ||
+		parsedCurrentSection < 0 ||
+		parsedLastViewedSection < 0
+	) {
+		return json({ error: 'Invalid progress payload' }, { status: 400 });
+	}
 
 	try {
 		const { db } = await import('$lib/server/db');
@@ -18,17 +34,31 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			.get();
 
 		if (existing) {
+			const existingUpdatedAtTime = existing.updatedAt instanceof Date
+				? existing.updatedAt.getTime()
+				: new Date(existing.updatedAt).getTime();
+			const shouldAdvanceView = Number.isNaN(existingUpdatedAtTime)
+				? true
+				: viewedAtDate.getTime() >= existingUpdatedAtTime;
+
 			db.update(lessonProgress)
-				.set({ currentSection, updatedAt: new Date() })
+				.set({
+					currentSection: Math.max(existing.currentSection, parsedCurrentSection),
+					lastViewedSection: shouldAdvanceView
+						? parsedLastViewedSection
+						: existing.lastViewedSection,
+					updatedAt: shouldAdvanceView ? viewedAtDate : existing.updatedAt
+				})
 				.where(eq(lessonProgress.id, existing.id))
 				.run();
 		} else {
 			db.insert(lessonProgress).values({
 				id: uuid(),
 				userId,
-				lessonId,
-				currentSection,
-				updatedAt: new Date(),
+				lessonId: parsedLessonId,
+				currentSection: parsedCurrentSection,
+				lastViewedSection: parsedLastViewedSection,
+				updatedAt: viewedAtDate,
 				completed: false
 			}).run();
 		}

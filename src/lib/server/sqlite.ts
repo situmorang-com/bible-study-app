@@ -32,6 +32,7 @@ const SCHEMA_SQL = `
 		lesson_id INTEGER NOT NULL,
 		completed INTEGER NOT NULL DEFAULT 0,
 		current_section INTEGER NOT NULL DEFAULT 0,
+		last_viewed_section INTEGER NOT NULL DEFAULT 0,
 		updated_at INTEGER NOT NULL DEFAULT (unixepoch()),
 		completed_at INTEGER,
 		UNIQUE(user_id, lesson_id)
@@ -116,6 +117,7 @@ const migrateUsersTable = (sqlite: Database.Database) => {
 const migrateLessonProgressTable = (sqlite: Database.Database) => {
 	const columns = sqlite.prepare(`PRAGMA table_info(lesson_progress)`).all() as Array<{ name: string }>;
 	const hasUpdatedAt = columns.some((column) => column.name === 'updated_at');
+	const hasLastViewedSection = columns.some((column) => column.name === 'last_viewed_section');
 
 	if (!hasUpdatedAt) {
 		sqlite.exec(`ALTER TABLE lesson_progress ADD COLUMN updated_at INTEGER NOT NULL DEFAULT 0`);
@@ -123,6 +125,15 @@ const migrateLessonProgressTable = (sqlite: Database.Database) => {
 			UPDATE lesson_progress
 			SET updated_at = COALESCE(completed_at, CAST(strftime('%s', 'now') AS INTEGER))
 			WHERE updated_at = 0 OR updated_at IS NULL
+		`);
+	}
+
+	if (!hasLastViewedSection) {
+		sqlite.exec(`ALTER TABLE lesson_progress ADD COLUMN last_viewed_section INTEGER NOT NULL DEFAULT 0`);
+		sqlite.exec(`
+			UPDATE lesson_progress
+			SET last_viewed_section = current_section
+			WHERE last_viewed_section = 0 AND current_section > 0
 		`);
 	}
 };

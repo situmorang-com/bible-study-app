@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ params, parent, url }) => {
 	}
 
 	const { user } = await parent();
-	let progress = { currentSection: 0, completed: false };
+	let progress = { currentSection: 0, lastViewedSection: 0, completed: false };
 	let bestQuizScore: number | null = null;
 	let certificateUrl: string | null = null;
 
@@ -30,7 +30,11 @@ export const load: PageServerLoad = async ({ params, parent, url }) => {
 				.get();
 
 			if (prog) {
-				progress = { currentSection: prog.currentSection, completed: !!prog.completed };
+				progress = {
+					currentSection: prog.currentSection,
+					lastViewedSection: prog.lastViewedSection,
+					completed: !!prog.completed
+				};
 			}
 
 			const quiz = db.select({ percentage: quizResults.percentage })

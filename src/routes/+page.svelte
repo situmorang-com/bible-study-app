@@ -12,6 +12,7 @@
 	});
 
 	let completedLessonIds = $derived(new Set(data.completedLessonIds ?? []));
+	let startedLessonIds = $derived(new Set(data.startedLessonIds ?? []));
 	let completedLessons = $derived(
 		lessons
 			.filter((lesson) => completedLessonIds.has(lesson.id))
@@ -23,8 +24,12 @@
 			.filter((lesson) => !completedLessonIds.has(lesson.id))
 			.slice(0, 3)
 	);
-	let primaryHeroHref = $derived(data.lastLessonHref ?? '/pelajaran');
+	let primaryHeroHref = $derived(data.continueLessonHref ?? '/pelajaran');
 	let primaryHeroLabel = $derived(data.hasLearningHistory ? 'Lanjut Belajar' : 'Mulai Belajar');
+
+	function isStarted(lessonId: number) {
+		return startedLessonIds.has(lessonId);
+	}
 </script>
 
 <div class="page-transition px-5 pt-8">
@@ -124,7 +129,12 @@
 						{lesson.icon}
 					</div>
 					<div class="flex-1 min-w-0">
-						<h4 class="font-bold text-gray-800 text-sm">{lesson.title}</h4>
+						<div class="flex items-center gap-2">
+							<h4 class="font-bold text-gray-800 text-sm">{lesson.title}</h4>
+							{#if isStarted(lesson.id)}
+								<span class="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-amber-700">Lanjut</span>
+							{/if}
+						</div>
 						<p class="text-gray-500 text-xs truncate">{lesson.subtitle}</p>
 					</div>
 					<div class="text-gray-300 text-lg">›</div>
