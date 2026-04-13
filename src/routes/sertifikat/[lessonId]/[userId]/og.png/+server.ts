@@ -5,15 +5,14 @@ import QRCode from 'qrcode';
 import { lessons } from '$lib/lessons';
 import {
 	buildCertId,
-	buildCertificateImage,
-	DESIGN_H,
-	DESIGN_W,
+	buildOgImage,
 	loadCertificateFonts,
-	OG_W
+	OG_IMAGE_H,
+	OG_IMAGE_W
 } from '$lib/server/certificate-render';
 import type { RequestHandler } from './$types';
 
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 
 export const GET: RequestHandler = async ({ params, fetch, setHeaders, url }) => {
 	const lessonId = Number.parseInt(params.lessonId, 10);
@@ -67,22 +66,23 @@ export const GET: RequestHandler = async ({ params, fetch, setHeaders, url }) =>
 	});
 
 	const fonts = await loadCertificateFonts(fetch);
-	const tree = buildCertificateImage({
+	const tree = buildOgImage({
 		userName: user.name,
 		lessonTitle: lesson.title,
+		percentage: Math.round(attempt.percentage),
 		issueDate,
 		certId,
 		qrDataUri
 	});
 
 	const svg = await satori(tree, {
-		width: DESIGN_W,
-		height: DESIGN_H,
+		width: OG_IMAGE_W,
+		height: OG_IMAGE_H,
 		fonts
 	});
 
 	const png = new Resvg(svg, {
-		fitTo: { mode: 'width', value: OG_W }
+		fitTo: { mode: 'width', value: OG_IMAGE_W }
 	})
 		.render()
 		.asPng();
