@@ -117,18 +117,6 @@ export function buildOgImage(opts: {
 								height: 44,
 								style: { display: 'flex', filter: 'brightness(0) invert(1)' }
 							}),
-							el('div', {
-								style: {
-									fontSize: '11px',
-									fontFamily: 'Inter',
-									fontWeight: 700,
-									letterSpacing: '8px',
-									textTransform: 'uppercase',
-									color: '#fff8e8',
-									display: 'flex'
-								},
-								children: 'SERTIFIKAT'
-							}),
 							el('img', {
 								src: adventistDataUri,
 								width: 140,
@@ -164,6 +152,20 @@ export function buildOgImage(opts: {
 									el('div', { style: { width: '8px', height: '8px', backgroundColor: '#b8852a', transform: 'rotate(45deg)', display: 'flex' } }),
 									el('div', { style: { width: '100px', height: '1px', backgroundColor: '#b8852a', display: 'flex' } })
 								]
+							}),
+							// SERTIFIKAT in body
+							el('div', {
+								style: {
+									fontSize: '13px',
+									fontFamily: 'Inter',
+									fontWeight: 700,
+									letterSpacing: '10px',
+									textTransform: 'uppercase',
+									color: '#b8852a',
+									display: 'flex',
+									marginBottom: '10px'
+								},
+								children: 'SERTIFIKAT'
 							}),
 							el('div', {
 								style: {
