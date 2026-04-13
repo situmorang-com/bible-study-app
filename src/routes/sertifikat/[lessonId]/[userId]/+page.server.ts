@@ -2,9 +2,9 @@ import { lessons } from '$lib/lessons';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
-const CERTIFICATE_ASSET_VERSION = 'v4';
+const CERTIFICATE_ASSET_VERSION = 'v5';
 
-export const load: PageServerLoad = async ({ params, url }) => {
+export const load: PageServerLoad = async ({ params, url, parent }) => {
 	const lessonId = Number.parseInt(params.lessonId, 10);
 	const lesson = lessons.find((entry) => entry.id === lessonId);
 
@@ -50,6 +50,10 @@ export const load: PageServerLoad = async ({ params, url }) => {
 				? passingAttempt.completedAt * 1000
 				: passingAttempt.completedAt;
 
+		const layoutData = await parent();
+		const viewerId = layoutData.user?.id ?? null;
+		const isOwner = viewerId === params.userId;
+
 		return {
 			lesson,
 			user,
@@ -57,7 +61,9 @@ export const load: PageServerLoad = async ({ params, url }) => {
 			origin: url.origin,
 			certificateUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}`,
 			ogImageUrl: `${url.origin}/sertifikat/${lessonId}/${params.userId}/og.png?v=${CERTIFICATE_ASSET_VERSION}`,
-			printPdfUrl: `/sertifikat/${lessonId}/${params.userId}/print.pdf?v=${CERTIFICATE_ASSET_VERSION}`
+			printPdfUrl: `/sertifikat/${lessonId}/${params.userId}/print.pdf?v=${CERTIFICATE_ASSET_VERSION}`,
+			isOwner,
+			isLoggedIn: viewerId !== null
 		};
 	} catch (err) {
 		if (err && typeof err === 'object' && 'status' in err) {
