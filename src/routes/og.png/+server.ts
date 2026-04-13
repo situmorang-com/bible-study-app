@@ -174,7 +174,7 @@ function buildLandingOgImage() {
 											color: 'rgba(255,255,255,0.76)',
 											display: 'flex'
 										},
-										children: '18 pelajaran • progres tersimpan • sertifikat'
+										children: '27 pelajaran • progres tersimpan • sertifikat'
 									})
 								]
 							})
@@ -257,7 +257,7 @@ function buildLandingOgImage() {
 															color: '#10253e',
 															display: 'flex'
 														},
-														children: 'Studi Alkitab'
+														children: 'Belajar Alkitab'
 													}),
 													el('div', {
 														style: {
