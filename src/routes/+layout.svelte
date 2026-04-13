@@ -1,6 +1,14 @@
 <script lang="ts">
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import {
+		SITE_DESCRIPTION,
+		SITE_NAME,
+		SITE_OG_IMAGE_ALT,
+		SITE_OG_IMAGE_PATH,
+		SITE_TITLE,
+		SITE_URL
+	} from '$lib/site';
 	import type { Snippet } from 'svelte';
 
 	let { children }: { children: Snippet } = $props();
@@ -28,7 +36,23 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 	<link rel="icon" href={favicon} />
 	<meta name="theme-color" content="#1e3a5f" />
-	<title>Pelajaran Alkitab — Studi Interaktif</title>
+	<title>{SITE_TITLE}</title>
+	<meta name="description" content={SITE_DESCRIPTION} />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content={SITE_NAME} />
+	<meta property="og:locale" content="id_ID" />
+	<meta property="og:title" content={SITE_TITLE} />
+	<meta property="og:description" content={SITE_DESCRIPTION} />
+	<meta property="og:url" content={SITE_URL} />
+	<meta property="og:image" content={`${SITE_URL}${SITE_OG_IMAGE_PATH}`} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:alt" content={SITE_OG_IMAGE_ALT} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={SITE_TITLE} />
+	<meta name="twitter:description" content={SITE_DESCRIPTION} />
+	<meta name="twitter:image" content={`${SITE_URL}${SITE_OG_IMAGE_PATH}`} />
 </svelte:head>
 
 <div class="min-h-screen pb-20 max-w-lg mx-auto relative">
